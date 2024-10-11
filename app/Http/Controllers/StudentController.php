@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
 use App\Models\Student;
+use Inertia\Inertia;
 
 class StudentController extends Controller
 {
@@ -14,7 +15,7 @@ class StudentController extends Controller
     public function index()
     {
         $students = Student::all();
-        return view('students.index', compact('students'));
+        return Inertia::render('Student/StudentIndex', ['students' => $students]);
     }
 
     /**

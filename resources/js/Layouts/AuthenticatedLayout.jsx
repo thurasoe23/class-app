@@ -228,7 +228,9 @@ export default function Authenticated({ header, children }) {
                 <ListItem button component="a" href={route('dashboard')}>
                     <ListItemText primary="Dashboard" />
                 </ListItem>
-                {/* Add more navigation links here */}
+                    <ListItem button component="a" href={route('students.index')}>
+                        <ListItemText primary="Student" />
+                    </ListItem>
             </List>
         </div>
     );
