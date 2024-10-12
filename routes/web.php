@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\BatchController;
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StudentController;
 use Illuminate\Foundation\Application;
@@ -25,6 +27,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('students', StudentController::class);
+    Route::resource('courses', CourseController::class);
+    Route::resource('batches', BatchController::class);
 });
 
 require __DIR__.'/auth.php';
