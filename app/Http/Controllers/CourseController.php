@@ -23,7 +23,7 @@ class CourseController extends Controller
      */
     public function create()
     {
-        return view('courses.create');
+        return Inertia::render('Course/CourseCreateForm');
     }
 
     /**
@@ -31,7 +31,7 @@ class CourseController extends Controller
      */
     public function store(StoreCourseRequest $request)
     {
-        Course::create($request->all());
+        Course::create($request->validated());
         return redirect()->route('courses.index')->with('success', 'Course created successfully');
     }
 

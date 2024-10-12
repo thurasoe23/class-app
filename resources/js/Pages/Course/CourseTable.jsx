@@ -9,6 +9,7 @@ import Paper from "@mui/material/Paper";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, usePage } from "@inertiajs/react";
 import Button from "@mui/material/Button";
+import { Inertia } from "@inertiajs/inertia";
 
 export default function CourseTable() {
     // Get the students data passed from the backend via Inertia.js
@@ -21,11 +22,14 @@ export default function CourseTable() {
                     <h2 className="text-xl font-semibold leading-tight text-black">
                         Courses List
                     </h2>
-                    <Button variant="contained">Add New Course</Button>
+                    <Button variant="contained"
+                    onClick={() => Inertia.get(route("courses.create"))}
+                    >
+                      Add New Course</Button>
                 </div>
             }
         >
-            <Head title="Students" />
+            <Head title="Courses" />
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
