@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreAssignmentRequest;
 use App\Http\Requests\UpdateAssignmentRequest;
 use App\Models\Assignment;
+use App\Models\Batch;
+use App\Models\Course;
+use App\Models\Student;
 use PHPUnit\Framework\MockObject\ReturnValueNotConfiguredException;
 use Inertia\Inertia;
 
@@ -24,7 +27,12 @@ class AssignmentController extends Controller
      */
     public function create()
     {
-        return view('assignments.create');
+        $courses = Course::all(); // Fetch all courses
+        $batches = Batch::all();
+        $students = Student::all();
+        return Inertia::render('Assignment/AssignmentCreateForm', [
+            'courses' => $courses, 'batches' => $batches, 'students' => $students // Pass courses to the component
+        ]);
     }
 
     /**
@@ -32,7 +40,7 @@ class AssignmentController extends Controller
      */
     public function store(StoreAssignmentRequest $request)
     {
-        Assignment::create($request->all());
+        Assignment::create($request->validated());
         return redirect()->route('assignments.index')->with('success', 'Assignment created successfully');
     }
 

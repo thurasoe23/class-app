@@ -9,6 +9,7 @@ import Paper from "@mui/material/Paper";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, usePage } from "@inertiajs/react";
 import { Button } from "@mui/material";
+import { Inertia } from "@inertiajs/inertia";
 
 export default function AssignmentTable() {
     const { assignments } = usePage().props;
@@ -20,7 +21,9 @@ export default function AssignmentTable() {
                     <h2 className="text-xl font-semibold leading-tight text-black">
                         Assignments List
                     </h2>
-                    <Button variant="contained">Add New Assignment</Button>
+                    <Button variant="contained"
+                    onClick={() => Inertia.get(route("assignments.create"))}
+                    >Add New Assignment</Button>
                 </div>
             }
         >
