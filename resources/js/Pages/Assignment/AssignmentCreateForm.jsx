@@ -67,7 +67,7 @@ export default function AssignmentCreateForm() {
                     >
                         {props.courses.map((course) => (
                             <MenuItem key={course.id} value={course.id}>
-                                {course.name} {/* Display the course name */}
+                                {`${course.name} (${course.course_level})`}
                             </MenuItem>
                         ))}
                     </Select>
@@ -101,7 +101,7 @@ export default function AssignmentCreateForm() {
                     >
                         {props.students.map((student) => (
                             <MenuItem key={student.id} value={student.id}>
-                                {student.name} {/* Display the student name */}
+                                {student.name}
                             </MenuItem>
                         ))}
                     </Select>

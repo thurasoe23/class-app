@@ -55,7 +55,7 @@ export default function AssignmentTable() {
                                     {assignment.batch.batch_identifier}
                                 </TableCell>
                                 <TableCell align="right">
-                                    {assignment.course.name}
+                                    {`${assignment.course.name} (${assignment.course.course_level})`}
                                 </TableCell>
                                 <TableCell align="right">
                                     {assignment.status}

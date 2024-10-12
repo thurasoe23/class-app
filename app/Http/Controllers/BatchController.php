@@ -35,7 +35,7 @@ class BatchController extends Controller
      */
     public function store(StoreBatchRequest $request)
     {
-        Batch::create($request->all());
+        Batch::create($request->validated());
         return redirect()->route('batches.index')->with('success', 'Batch created successfully!');
     }
 

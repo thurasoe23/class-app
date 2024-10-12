@@ -26,4 +26,9 @@ class Course extends Model
     {
         return $this->belongsToMany(Student::class)->withPivot('status')->withTimestamps();
     }
+
+    public function getDisplayNameAttribute()
+    {
+        return "{$this->name} ({$this->course_level})";
+    }
 }

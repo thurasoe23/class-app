@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('type');
-            $table->string('transaction_id');
             $table->unsignedBigInteger('student_id'); // Foreign key to students
             $table->integer('amount');
             $table->timestamps();

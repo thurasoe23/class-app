@@ -52,7 +52,7 @@ export default function BatchTable() {
                                 }}
                             >
                                 <TableCell component="th" scope="row">
-                                    {batch.course.name}
+                                {`${batch.course.name} (${batch.course.course_level})`}
                                 </TableCell>
                                 <TableCell align="right">
                                     {batch.batch_identifier}

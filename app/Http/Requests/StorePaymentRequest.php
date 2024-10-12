@@ -23,7 +23,6 @@ class StorePaymentRequest extends FormRequest
     {
         return [
             'type' => 'required|string|max:255',
-            'transaction_id' => 'required|string|max:255',
             'student_id' => 'required|exists:students,id',
             'amount' => 'required|integer',
         ];

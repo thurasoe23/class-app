@@ -52,7 +52,7 @@ export default function BatchCreateForm() {
                     >
                         {props.courses.map((course) => (
                             <MenuItem key={course.id} value={course.id}>
-                                {course.name} {/* Display the course name */}
+                             {`${course.name} (${course.course_level})`}
                             </MenuItem>
                         ))}
                     </Select>
