@@ -265,7 +265,7 @@ export default function Authenticated({ header, children }) {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap component="div">
-                        Dashboard
+                        Class App
                     </Typography>
                     <Box sx={{ flexGrow: 1 }} />
                     <IconButton
@@ -302,7 +302,6 @@ export default function Authenticated({ header, children }) {
                         </MenuItem>
                         <MenuItem
                             onClick={handleLogout}
-
                         >
                             Log Out
                         </MenuItem>

@@ -23,7 +23,7 @@ class StudentController extends Controller
      */
     public function create()
     {
-        return view('students.create');
+        return Inertia::render('Student/StudentCreateForm');
     }
 
     /**
@@ -31,7 +31,7 @@ class StudentController extends Controller
      */
     public function store(StoreStudentRequest $request)
     {
-        Student::create($request->all());
+        Student::create($request->validated());
         return redirect()->route('students.index')->with('success', 'Student created successfully!');
     }
 
