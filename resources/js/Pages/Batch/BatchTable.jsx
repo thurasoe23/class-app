@@ -9,6 +9,7 @@ import Paper from "@mui/material/Paper";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, usePage } from "@inertiajs/react";
 import { Button } from "@mui/material";
+import { Inertia } from "@inertiajs/inertia";
 
 export default function BatchTable() {
     const { batches } = usePage().props;
@@ -20,11 +21,16 @@ export default function BatchTable() {
                     <h2 className="text-xl font-semibold leading-tight text-black">
                         Batches List
                     </h2>
-                    <Button variant="contained">Add New Batch</Button>
+                    <Button
+                        variant="contained"
+                        onClick={() => Inertia.get(route("batches.create"))}
+                    >
+                        Add New Batch
+                    </Button>
                 </div>
             }
         >
-            <Head title="Assignments" />
+            <Head title="Batches" />
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreBatchRequest;
 use App\Http\Requests\UpdateBatchRequest;
 use App\Models\Batch;
+use App\Models\Course;
 use Inertia\Inertia;
 
 class BatchController extends Controller
@@ -23,7 +24,10 @@ class BatchController extends Controller
      */
     public function create()
     {
-        return view('batches.create');
+        $courses = Course::all(); // Fetch all courses
+        return Inertia::render('Batch/BatchCreateForm', [
+            'courses' => $courses, // Pass courses to the component
+        ]);
     }
 
     /**
