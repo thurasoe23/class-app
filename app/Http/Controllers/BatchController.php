@@ -15,7 +15,7 @@ class BatchController extends Controller
     public function index()
     {
         $batch = Batch::with('course')->get();
-        return Inertia::render('Batch/BatchIndex', ['batches' => $batch]);
+        return Inertia::render('Batch/BatchTable', ['batches' => $batch]);
     }
 
     /**

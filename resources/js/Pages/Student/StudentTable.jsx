@@ -9,7 +9,7 @@ import Paper from '@mui/material/Paper';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, usePage } from '@inertiajs/react';
 
-export default function StudentIndex() {
+export default function StudentTable() {
   // Get the students data passed from the backend via Inertia.js
   const { students } = usePage().props;
 

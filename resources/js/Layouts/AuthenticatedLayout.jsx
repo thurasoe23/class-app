@@ -237,6 +237,9 @@ export default function Authenticated({ header, children }) {
                 <ListItem button component="a" href={route('batches.index')}>
                     <ListItemText primary="Batches" />
                 </ListItem>
+                <ListItem button component="a" href={route('assignments.index')}>
+                    <ListItemText primary="Assignments" />
+                </ListItem>
             </List>
         </div>
     );

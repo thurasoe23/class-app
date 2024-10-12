@@ -9,15 +9,15 @@ import Paper from '@mui/material/Paper';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, usePage } from '@inertiajs/react';
 
-export default function BasicTable() {
+export default function AssignmentTable() {
 
-    const { batches } = usePage().props;
+    const { assignments } = usePage().props;
 
   return (
     <AuthenticatedLayout
     header={
       <h2 className="text-xl font-semibold leading-tight text-black">
-        Batch List
+        Assignment List
       </h2>
     }
   >
@@ -26,24 +26,24 @@ export default function BasicTable() {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Course Name</TableCell>
-            <TableCell align="right">Batch</TableCell>
-            <TableCell align="right">Start Date</TableCell>
-            <TableCell align="right">End Date</TableCell>
+            <TableCell>Student Name</TableCell>
+            <TableCell align="right">Batch Name</TableCell>
+            <TableCell align="right">Course Name</TableCell>
+            <TableCell align="right">Status</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {batches.map((batch) => (
+          {assignments.map((assignment) => (
             <TableRow
-              key={batch.id}
+              key={assignment.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {batch.course.name}
+                {assignment.student.name}
               </TableCell>
-              <TableCell align="right">{batch.batch_identifier}</TableCell>
-              <TableCell align="right">{batch.start_date}</TableCell>
-              <TableCell align="right">{batch.end_date}</TableCell>
+              <TableCell align="right">{assignment.batch.batch_identifier}</TableCell>
+              <TableCell align="right">{assignment.course.name}</TableCell>
+              <TableCell align="right">{assignment.status}</TableCell>
             </TableRow>
           ))}
         </TableBody>

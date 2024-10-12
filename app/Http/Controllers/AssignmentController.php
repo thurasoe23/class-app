@@ -6,6 +6,7 @@ use App\Http\Requests\StoreAssignmentRequest;
 use App\Http\Requests\UpdateAssignmentRequest;
 use App\Models\Assignment;
 use PHPUnit\Framework\MockObject\ReturnValueNotConfiguredException;
+use Inertia\Inertia;
 
 class AssignmentController extends Controller
 {
@@ -14,8 +15,8 @@ class AssignmentController extends Controller
      */
     public function index()
     {
-        $assignment = Assignment::all();
-        return view('assignments.index', compact('assignment'));
+        $assignment = Assignment::with(['student', 'batch', 'course'])->get();
+        return Inertia::render('Assignment/AssignmentTable', ['assignments' => $assignment]);
     }
 
     /**

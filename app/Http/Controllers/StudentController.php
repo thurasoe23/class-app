@@ -15,7 +15,7 @@ class StudentController extends Controller
     public function index()
     {
         $students = Student::all();
-        return Inertia::render('Student/StudentIndex', ['students' => $students]);
+        return Inertia::render('Student/StudentTable', ['students' => $students]);
     }
 
     /**

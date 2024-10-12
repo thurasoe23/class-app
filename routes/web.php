@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\BatchController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ProfileController;
@@ -29,6 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('students', StudentController::class);
     Route::resource('courses', CourseController::class);
     Route::resource('batches', BatchController::class);
+    Route::resource('assignments', AssignmentController::class);
 });
 
 require __DIR__.'/auth.php';
