@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePaymentRequest;
 use App\Http\Requests\UpdatePaymentRequest;
 use App\Models\Payment;
+use Inertia\Inertia;
 
 class PaymentController extends Controller
 {
@@ -13,8 +14,8 @@ class PaymentController extends Controller
      */
     public function index()
     {
-        $payment = Payment::all();
-        return view('payments.index', compact('payment'));
+        $payment = Payment::with('student')->get();
+        return Inertia::render('Payment/PaymentTable', ['payments' => $payment]);
     }
 
     /**
