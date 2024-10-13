@@ -48,7 +48,7 @@ class StudentController extends Controller
      */
     public function edit(Student $student)
     {
-        return view('students.edit', compact('student'));
+        return Inertia::render('Student/StudentEditForm', ['student' => $student]);
     }
 
     /**
@@ -57,7 +57,7 @@ class StudentController extends Controller
     public function update(UpdateStudentRequest $request, Student $student)
     {
         // Update the student record with validated data
-        $student->update($request->all());
+        $student->update($request->validated());
 
         // Redirect to the students index page with a success message
         return redirect()->route('students.index')->with('success', 'Student updated successfully!');

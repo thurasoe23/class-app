@@ -10,10 +10,43 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, usePage } from "@inertiajs/react";
 import Button from "@mui/material/Button";
 import { Inertia } from "@inertiajs/inertia";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { blue } from "@mui/material/colors";
 
 export default function StudentTable() {
     // Get the students data passed from the backend via Inertia.js
     const { students } = usePage().props;
+
+    // State for managing the menu
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [selectedStudent, setSelectedStudent] = React.useState(null);
+
+    const handleMenuOpen = (event, student) => {
+        setAnchorEl(event.currentTarget);
+        setSelectedStudent(student);
+    };
+
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+        setSelectedStudent(null); // Clear the selected student after closing the menu
+    };
+
+    const handleEdit = () => {
+        Inertia.get(route("students.edit", selectedStudent.id)); // Navigate to edit page
+        handleMenuClose(); // Close the menu after action
+    };
+
+    const handleDelete = () => {
+        if (confirm("Are you sure you want to delete this student?")) {
+            Inertia.delete(route("students.destroy", selectedStudent.id)); // Perform delete action
+        }
+        handleMenuClose(); // Close the menu after action
+    };
 
     return (
         <AuthenticatedLayout
@@ -47,6 +80,7 @@ export default function StudentTable() {
                             <TableCell align="right">
                                 Facebook Username
                             </TableCell>
+                            <TableCell align="right">Actions</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -80,11 +114,40 @@ export default function StudentTable() {
                                 <TableCell align="right">
                                     {student.facebook_username}
                                 </TableCell>
+                                <TableCell align="right" sx={{padding: 0}}>
+                                    <IconButton
+                                        aria-label="more"
+                                        aria-controls="long-menu"
+                                        aria-haspopup="true"
+                                        onClick={(event) =>
+                                            handleMenuOpen(event, student)
+                                        }
+                                    >
+                                        <MoreVertIcon />
+                                    </IconButton>
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
             </TableContainer>
+
+            {/* Menu for Edit/Delete */}
+            <Menu
+                id="long-menu"
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+                PaperProps={{
+                    style: {
+                        maxHeight: 48 * 4.5,
+                        width: "20ch",
+                    },
+                }}
+            >
+                <MenuItem onClick={handleEdit}><EditIcon sx={{marginRight: 1}} />Edit</MenuItem>
+                <MenuItem onClick={handleDelete}><DeleteIcon sx={{marginRight: 1}} />Delete</MenuItem>
+            </Menu>
         </AuthenticatedLayout>
     );
 }
