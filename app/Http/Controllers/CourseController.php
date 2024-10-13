@@ -48,7 +48,7 @@ class CourseController extends Controller
      */
     public function edit(Course $course)
     {
-        return view('course.edit', compact('course'));
+        return Inertia::render('Course/CourseEditForm', ['course' => $course]);
     }
 
     /**
@@ -56,8 +56,8 @@ class CourseController extends Controller
      */
     public function update(UpdateCourseRequest $request, Course $course)
     {
-        $course->update($request->all());
-        return redirect()->route('course.index')->with('success', 'Course updated successfully');
+        $course->update($request->validated());
+        return redirect()->route('courses.index')->with('success', 'Course updated successfully');
     }
 
     /**
@@ -66,6 +66,6 @@ class CourseController extends Controller
     public function destroy(Course $course)
     {
         $course->delete();
-        return redirect()->route('course.index')->with('success', 'Course deleted successfully');
+        return redirect()->route('courses.index')->with('success', 'Course deleted successfully');
     }
 }

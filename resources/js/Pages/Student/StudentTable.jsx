@@ -16,7 +16,6 @@ import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { blue } from "@mui/material/colors";
 
 export default function StudentTable() {
     // Get the students data passed from the backend via Inertia.js
