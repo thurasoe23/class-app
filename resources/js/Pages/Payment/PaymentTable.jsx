@@ -9,6 +9,7 @@ import Paper from "@mui/material/Paper";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, usePage } from "@inertiajs/react";
 import { Button } from "@mui/material";
+import { Inertia } from "@inertiajs/inertia";
 
 export default function PaymentTable() {
     // Get the students data passed from the backend via Inertia.js
@@ -21,7 +22,8 @@ export default function PaymentTable() {
                     <h2 className="text-xl font-semibold leading-tight text-black">
                         Payments List
                     </h2>
-                    <Button variant="contained">Add New Payment</Button>
+                    <Button variant="contained"
+                    onClick={() => Inertia.get(route("payments.create"))}>Add New Payment</Button>
                 </div>
             }
         >
@@ -32,6 +34,7 @@ export default function PaymentTable() {
                         <TableRow>
                             <TableCell>Type</TableCell>
                             <TableCell align="right">Student Name</TableCell>
+                            <TableCell align="right">Course Name</TableCell>
                             <TableCell align="right">Amount</TableCell>
                         </TableRow>
                     </TableHead>
@@ -50,6 +53,9 @@ export default function PaymentTable() {
                                 </TableCell>
                                 <TableCell align="right">
                                     {payment.student.name}
+                                </TableCell>
+                                <TableCell align="right">
+                                {`${payment.course.name} (${payment.course.course_level})`}
                                 </TableCell>
                                 <TableCell align="right">
                                     {payment.amount}

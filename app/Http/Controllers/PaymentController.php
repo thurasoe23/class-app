@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePaymentRequest;
 use App\Http\Requests\UpdatePaymentRequest;
+use App\Models\Course;
 use App\Models\Payment;
+use App\Models\Student;
 use Inertia\Inertia;
 
 class PaymentController extends Controller
@@ -14,7 +16,7 @@ class PaymentController extends Controller
      */
     public function index()
     {
-        $payment = Payment::with('student')->get();
+        $payment = Payment::with(['student', 'course'])->get();
         return Inertia::render('Payment/PaymentTable', ['payments' => $payment]);
     }
 
@@ -22,8 +24,10 @@ class PaymentController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-        return view('payments.create');
+    {   
+        $students = Student::all();
+        $courses = Course::all();
+        return Inertia::render('Payment/PaymentCreateForm', ['students' => $students, 'courses' => $courses]);
     }
 
     /**
@@ -31,7 +35,7 @@ class PaymentController extends Controller
      */
     public function store(StorePaymentRequest $request)
     {
-        Payment::create($request->all());
+        Payment::create($request->validated());
         return redirect()->route('payments.index')->with('success', 'Payment created successfully!');
     }
 

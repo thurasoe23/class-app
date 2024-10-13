@@ -13,11 +13,17 @@ class Payment extends Model
     protected $fillable = [
         'type',
         'student_id',
+        'course_id',
         'amount',
     ];
 
     public function student()
     {
         return $this->belongsTo(Student::class);
+    }
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
     }
 }

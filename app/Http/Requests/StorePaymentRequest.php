@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class StorePaymentRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class StorePaymentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return Auth::check();
     }
 
     /**
@@ -24,6 +25,7 @@ class StorePaymentRequest extends FormRequest
         return [
             'type' => 'required|string|max:255',
             'student_id' => 'required|exists:students,id',
+            'course_id' => 'required|exists:courses,id',
             'amount' => 'required|integer',
         ];
     }

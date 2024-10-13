@@ -14,13 +14,15 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('type');
-            $table->unsignedBigInteger('student_id'); // Foreign key to students
+            $table->unsignedBigInteger('student_id');
+            $table->unsignedBigInteger('course_id'); 
             $table->integer('amount');
             $table->timestamps();
             $table->softDeletes();
 
             // Define foreign key constraint
             $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
+            $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
         });
     }
 
