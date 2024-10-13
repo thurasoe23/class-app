@@ -24,7 +24,7 @@ export default function BatchCreateForm() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        put(route("batches.update", { batch: batch.id })); // Send PUT request to update the batch
+        put(route("batches.update", batch.id )); // Send PUT request to update the batch
     };
 
     return (

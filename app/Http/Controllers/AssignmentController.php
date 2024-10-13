@@ -57,7 +57,12 @@ class AssignmentController extends Controller
      */
     public function edit(Assignment $assignment)
     {
-        return view('assignments.edit', compact('assignment'));
+        $students = Student::all();
+        $courses = Course::all();
+        $batches = Batch::all();
+
+        $assignment->load('student', 'batch', 'course');
+        return Inertia::render('Assignment/AssignmentEditForm', ['student' => $students,'batch' => $batches, 'course' => $courses, 'assignment' => $assignment]);
     }
 
     /**
@@ -65,7 +70,7 @@ class AssignmentController extends Controller
      */
     public function update(UpdateAssignmentRequest $request, Assignment $assignment)
     {
-        $assignment->update($request->all());
+        $assignment->update($request->validated());
         return redirect()->route('assignments.index')->with('success', 'Assignment updated successfully');
     }
 
