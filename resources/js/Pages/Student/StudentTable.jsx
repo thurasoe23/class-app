@@ -131,7 +131,6 @@ export default function StudentTable() {
                 </Table>
             </TableContainer>
 
-            {/* Menu for Edit/Delete */}
             <Menu
                 id="long-menu"
                 anchorEl={anchorEl}

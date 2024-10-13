@@ -52,7 +52,8 @@ class BatchController extends Controller
      */
     public function edit(Batch $batch)
     {
-        return view('batches.edit', compact('batch'));
+        $courses = Course::all();
+        return Inertia::render('Batch/BatchEditForm', ['batch' => $batch, 'course' => $courses]);
     }
 
     /**
@@ -60,7 +61,7 @@ class BatchController extends Controller
      */
     public function update(UpdateBatchRequest $request, Batch $batch)
     {
-        $batch->update($request->all());
+        $batch->update($request->validated());
         return redirect()->route('batches.index')->with('success', 'Batch updated successfully!');
     }
 
