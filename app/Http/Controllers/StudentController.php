@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
 use App\Models\Student;
+use Inertia\Inertia;
 
 class StudentController extends Controller
 {
@@ -14,7 +15,7 @@ class StudentController extends Controller
     public function index()
     {
         $students = Student::all();
-        return view('students.index', compact('students'));
+        return Inertia::render('Student/StudentTable', ['students' => $students]);
     }
 
     /**
@@ -22,7 +23,7 @@ class StudentController extends Controller
      */
     public function create()
     {
-        return view('students.create');
+        return Inertia::render('Student/StudentCreateForm');
     }
 
     /**
@@ -30,7 +31,7 @@ class StudentController extends Controller
      */
     public function store(StoreStudentRequest $request)
     {
-        Student::create($request->all());
+        Student::create($request->validated());
         return redirect()->route('students.index')->with('success', 'Student created successfully!');
     }
 
@@ -47,7 +48,7 @@ class StudentController extends Controller
      */
     public function edit(Student $student)
     {
-        return view('students.edit', compact('student'));
+        return Inertia::render('Student/StudentEditForm', ['student' => $student]);
     }
 
     /**
@@ -56,7 +57,7 @@ class StudentController extends Controller
     public function update(UpdateStudentRequest $request, Student $student)
     {
         // Update the student record with validated data
-        $student->update($request->all());
+        $student->update($request->validated());
 
         // Redirect to the students index page with a success message
         return redirect()->route('students.index')->with('success', 'Student updated successfully!');

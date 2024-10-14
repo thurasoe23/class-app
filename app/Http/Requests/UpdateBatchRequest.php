@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class UpdateStudentRequest extends FormRequest
+class UpdateBatchRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,13 +23,10 @@ class UpdateStudentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'string|max:255',
-            'phone_number' => 'string|max:255',
-            'email' => 'email|unique:students,email',
-            'gender' => 'string',
-            'city' => 'nullable|string|max:255',
-            'telegram_username' => 'nullable|string|max:255',
-            'facebook_username' => 'nullable|string|max:255',
+            'course_id' => 'exists:courses,id',
+            'batch_identifier' => 'string',
+            'start_date' => 'date',
+            'end_date' => 'date|after:start_date',
         ];
     }
 }
