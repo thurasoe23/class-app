@@ -67,6 +67,7 @@ export default function BatchTable() {
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                         <TableRow>
+                            <TableCell>ID</TableCell>
                             <TableCell>Course Name</TableCell>
                             <TableCell align="right">Batch</TableCell>
                             <TableCell align="right">Start Date</TableCell>
@@ -84,6 +85,9 @@ export default function BatchTable() {
                                     },
                                 }}
                             >
+                                <TableCell align="left">
+                                    {batch.id}
+                                </TableCell>
                                 <TableCell component="th" scope="row">
                                 {`${batch.course.name} (${batch.course.course_level})`}
                                 </TableCell>

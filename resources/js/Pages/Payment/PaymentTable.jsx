@@ -32,6 +32,7 @@ export default function PaymentTable() {
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                         <TableRow>
+                            <TableCell>ID</TableCell>
                             <TableCell>Type</TableCell>
                             <TableCell align="right">Student Name</TableCell>
                             <TableCell align="right">Course Name</TableCell>
@@ -48,6 +49,7 @@ export default function PaymentTable() {
                                     },
                                 }}
                             >
+                                <TableCell>{payment.id}</TableCell>
                                 <TableCell component="th" scope="row">
                                     {payment.type}
                                 </TableCell>

@@ -68,6 +68,7 @@ export default function StudentTable() {
                 <Table sx={{ minWidth: 650 }} aria-label="students table">
                     <TableHead>
                         <TableRow>
+                            <TableCell>ID</TableCell>
                             <TableCell>Student Name</TableCell>
                             <TableCell align="right">Phone Number</TableCell>
                             <TableCell align="right">Email</TableCell>
@@ -92,6 +93,9 @@ export default function StudentTable() {
                                     },
                                 }}
                             >
+                                <TableCell component="th" scope="row">
+                                    {student.id}
+                                </TableCell>
                                 <TableCell component="th" scope="row">
                                     {student.name}
                                 </TableCell>
