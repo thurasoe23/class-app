@@ -6,6 +6,9 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StudentController;
+use App\Models\Assignment;
+use App\Models\Payment;
+use App\Models\Student;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -20,7 +23,11 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    $totalStudents = Student::count();
+    $totalAssignments = Assignment::count();
+    $pendingAssignments = Assignment::where('status', 'pending')->count();
+    $totalPaymentAmount = Payment::sum('amount');
+    return Inertia::render('Dashboard', ['totalStudents' => $totalStudents, 'totalAssignments' => $totalAssignments, 'pendingAssignments' => $pendingAssignments, 'totalPaymentAmount' => $totalPaymentAmount]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {

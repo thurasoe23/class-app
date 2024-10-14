@@ -191,7 +191,13 @@ import {
     CssBaseline,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import PieChartIcon from '@mui/icons-material/PieChart';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
 import AccountCircle from '@mui/icons-material/AccountCircle';
+import DynamicFeedIcon from '@mui/icons-material/DynamicFeed';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import PaymentIcon from '@mui/icons-material/Payment';
 import axios from 'axios';
 
 const drawerWidth = 240;
@@ -226,22 +232,22 @@ export default function Authenticated({ header, children }) {
             <Toolbar />
             <List>
                 <ListItem button component="a" href={route('dashboard')}>
-                    <ListItemText primary="Dashboard" />
+                    <PieChartIcon sx={{marginRight: 2}} /><ListItemText primary="Dashboard" />
                 </ListItem>
                 <ListItem button component="a" href={route('students.index')}>
-                    <ListItemText primary="Students" />
+                    <PeopleAltIcon sx={{marginRight: 2}} /><ListItemText primary="Students" />
                 </ListItem>
                 <ListItem button component="a" href={route('courses.index')}>
-                    <ListItemText primary="Courses" />
+                    <MenuBookIcon sx={{marginRight: 2}} /><ListItemText primary="Courses" />
                 </ListItem>
                 <ListItem button component="a" href={route('batches.index')}>
-                    <ListItemText primary="Batches" />
+                    <DynamicFeedIcon sx={{marginRight: 2}} /><ListItemText primary="Batches" />
                 </ListItem>
                 <ListItem button component="a" href={route('assignments.index')}>
-                    <ListItemText primary="Assignments" />
+                    <AssignmentIcon sx={{marginRight: 2}} /><ListItemText primary="Assignments" />
                 </ListItem>
                 <ListItem button component="a" href={route('payments.index')}>
-                    <ListItemText primary="Payments" />
+                    <PaymentIcon sx={{marginRight: 2}} /><ListItemText primary="Payments" />
                 </ListItem>
             </List>
         </div>
