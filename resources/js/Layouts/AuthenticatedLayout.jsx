@@ -232,22 +232,22 @@ export default function Authenticated({ header, children }) {
             <Toolbar />
             <List>
                 <ListItem button component="a" href={route('dashboard')}>
-                    <PieChartIcon sx={{marginRight: 2}} /><ListItemText primary="Dashboard" />
+                    <PieChartIcon sx={{marginRight: 2, color: 'gray'}} /><ListItemText primary="Dashboard" />
                 </ListItem>
                 <ListItem button component="a" href={route('students.index')}>
-                    <PeopleAltIcon sx={{marginRight: 2}} /><ListItemText primary="Students" />
+                    <PeopleAltIcon sx={{marginRight: 2, color: 'gray'}} /><ListItemText primary="Students" />
                 </ListItem>
                 <ListItem button component="a" href={route('courses.index')}>
-                    <MenuBookIcon sx={{marginRight: 2}} /><ListItemText primary="Courses" />
+                    <MenuBookIcon sx={{marginRight: 2, color: 'gray'}} /><ListItemText primary="Courses" />
                 </ListItem>
                 <ListItem button component="a" href={route('batches.index')}>
-                    <DynamicFeedIcon sx={{marginRight: 2}} /><ListItemText primary="Batches" />
+                    <DynamicFeedIcon sx={{marginRight: 2, color: 'gray'}} /><ListItemText primary="Batches" />
                 </ListItem>
                 <ListItem button component="a" href={route('assignments.index')}>
-                    <AssignmentIcon sx={{marginRight: 2}} /><ListItemText primary="Assignments" />
+                    <AssignmentIcon sx={{marginRight: 2, color: 'gray'}} /><ListItemText primary="Assignments" />
                 </ListItem>
                 <ListItem button component="a" href={route('payments.index')}>
-                    <PaymentIcon sx={{marginRight: 2}} /><ListItemText primary="Payments" />
+                    <PaymentIcon sx={{marginRight: 2, color: 'gray'}} /><ListItemText primary="Payments" />
                 </ListItem>
             </List>
         </div>
