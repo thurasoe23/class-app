@@ -30,6 +30,8 @@ class UpdateStudentRequest extends FormRequest
             'city' => 'nullable|string|max:255',
             'telegram_username' => 'nullable|string|max:255',
             'facebook_username' => 'nullable|string|max:255',
+            'course_id' => 'required|exists:courses,id',
+            'status' => 'required|string',
         ];
     }
 }

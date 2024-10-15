@@ -12,8 +12,8 @@ import {
 } from "@mui/material";
 
 export default function StudentEditForm() {
-    // Retrieve the student data passed from the backend
-    const { student } = usePage().props;
+    // Retrieve the student data and available courses passed from the backend
+    const { student, courses } = usePage().props;
 
     // Initialize the form data with the existing student details
     const { data, setData, put, errors, processing } = useForm({
@@ -24,6 +24,8 @@ export default function StudentEditForm() {
         city: student.city || "",
         telegram_username: student.telegram_username || "",
         facebook_username: student.facebook_username || "",
+        course_id: student.courses?.[0]?.id || "", // Safe access with optional chaining
+        status: student.courses?.[0]?.pivot?.status || "registered", // Default to 'registered' if no course
     });
 
     const handleSubmit = (e) => {
@@ -73,12 +75,10 @@ export default function StudentEditForm() {
                 />
 
                 <FormControl>
-                    <InputLabel id="demo-simple-select-label">
-                        Gender
-                    </InputLabel>
+                    <InputLabel id="gender-select-label">Gender</InputLabel>
                     <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
+                        labelId="gender-select-label"
+                        id="gender-select"
                         value={data.gender}
                         label="Gender"
                         onChange={(e) => setData("gender", e.target.value)}
@@ -111,6 +111,39 @@ export default function StudentEditForm() {
                     value={data.facebook_username}
                     onChange={(e) => setData("facebook_username", e.target.value)}
                 />
+
+                {/* New fields for course and status */}
+                <FormControl fullWidth>
+                    <InputLabel id="course-select-label">Course</InputLabel>
+                    <Select
+                        labelId="course-select-label"
+                        id="course-select"
+                        value={data.course_id}
+                        label="Course"
+                        onChange={(e) => setData("course_id", e.target.value)}
+                    >
+                        {courses.map((course) => (
+                            <MenuItem key={course.id} value={course.id}>
+                                {course.name} ({course.course_level})
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+
+                <FormControl fullWidth>
+                    <InputLabel id="status-select-label">Status</InputLabel>
+                    <Select
+                        labelId="status-select-label"
+                        id="status-select"
+                        value={data.status}
+                        label="Status"
+                        onChange={(e) => setData("status", e.target.value)}
+                    >
+                        <MenuItem value="registered">Registered</MenuItem>
+                        <MenuItem value="active">Active</MenuItem>
+                        <MenuItem value="completed">Completed</MenuItem>
+                    </Select>
+                </FormControl>
 
                 <div>
                     <Button

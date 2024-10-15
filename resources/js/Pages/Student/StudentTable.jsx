@@ -72,6 +72,8 @@ export default function StudentTable() {
                             <TableCell align="right">Email</TableCell>
                             <TableCell align="right">Gender</TableCell>
                             <TableCell align="right">City</TableCell>
+                            <TableCell align="right">Course</TableCell>
+                            <TableCell align="right">Status</TableCell>
                             <TableCell align="right">
                                 Telegram Username
                             </TableCell>
@@ -109,6 +111,12 @@ export default function StudentTable() {
                                 <TableCell align="right">
                                     {student.city}
                                 </TableCell>
+                                <TableCell align="right">
+                {student.courses.length > 0 ? student.courses[0].name : 'Not registered'}
+            </TableCell>
+            <TableCell align="right">
+                {student.courses.length > 0 ? student.courses[0].pivot.status : 'N/A'}
+            </TableCell>
                                 <TableCell align="right">
                                     {student.telegram_username}
                                 </TableCell>

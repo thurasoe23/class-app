@@ -11,7 +11,8 @@ import {
     InputLabel,
 } from "@mui/material";
 
-export default function StudentCreateForm() {
+export default function StudentCreateForm({ courses }) {
+    // Accept courses as a prop
     const { data, setData, post, errors, processing } = useForm({
         name: "",
         phone_number: "",
@@ -20,11 +21,13 @@ export default function StudentCreateForm() {
         city: "",
         telegram_username: "",
         facebook_username: "",
+        course_id: "", // New field for selected course
+        status: "registered", // Default registration status
     });
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        post(route("students.store"));
+        post(route("students.store")); // POST request to store the new student and course registration
     };
 
     return (
@@ -41,7 +44,7 @@ export default function StudentCreateForm() {
                 sx={{ "& > :not(style)": { m: 1, width: "25ch" } }}
                 component="form"
                 autoComplete="off"
-            >   
+            >
                 <TextField
                     id="outlined-basic"
                     label="Name"
@@ -68,12 +71,10 @@ export default function StudentCreateForm() {
                 />
 
                 <FormControl>
-                    <InputLabel id="demo-simple-select-label">
-                        Gender
-                    </InputLabel>
+                    <InputLabel id="gender-select-label">Gender</InputLabel>
                     <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
+                        labelId="gender-select-label"
+                        id="gender-select"
                         value={data.gender}
                         label="Gender"
                         onChange={(e) => setData("gender", e.target.value)}
@@ -92,20 +93,58 @@ export default function StudentCreateForm() {
                     onChange={(e) => setData("city", e.target.value)}
                     required
                 />
+
                 <TextField
                     id="outlined-basic"
                     label="Telegram Username"
                     variant="outlined"
                     value={data.telegram_username}
-                    onChange={(e) => setData("telegram_username", e.target.value)}
+                    onChange={(e) =>
+                        setData("telegram_username", e.target.value)
+                    }
                 />
                 <TextField
                     id="outlined-basic"
                     label="Facebook Username"
                     variant="outlined"
                     value={data.facebook_username}
-                    onChange={(e) => setData("facebook_username", e.target.value)}
+                    onChange={(e) =>
+                        setData("facebook_username", e.target.value)
+                    }
                 />
+
+                <FormControl fullWidth>
+                    <InputLabel id="course-select-label">Course</InputLabel>
+                    <Select
+                        labelId="course-select-label"
+                        id="course-select"
+                        value={data.course_id}
+                        label="Course"
+                        onChange={(e) => setData("course_id", e.target.value)}
+                    >
+                        {courses.map((course) => (
+                            <MenuItem key={course.id} value={course.id}>
+                                {course.name} ({course.course_level}){" "}
+                                {/* Ensure course has these properties */}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+
+                <FormControl fullWidth>
+                    <InputLabel id="status-select-label">Status</InputLabel>
+                    <Select
+                        labelId="status-select-label"
+                        id="status-select"
+                        value={data.status}
+                        label="Status"
+                        onChange={(e) => setData("status", e.target.value)}
+                    >
+                        <MenuItem value="registered">Registered</MenuItem>
+                        <MenuItem value="active">Active</MenuItem>
+                        <MenuItem value="completed">Completed</MenuItem>
+                    </Select>
+                </FormControl>
 
                 <div>
                     <Button
