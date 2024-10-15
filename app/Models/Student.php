@@ -24,11 +24,6 @@ class Student extends Model
 
     protected $dates = ['deleted_at'];
 
-    public function courses()
-    {
-        return $this->belongsToMany(Course::class)->withPivot('status')->withTimestamps();
-    }
-
     public function payments()
     {
         return $this->hasMany(Payment::class);
