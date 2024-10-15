@@ -15,7 +15,6 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid2";
 
 export default function CourseTable() {
-    // Get the students data passed from the backend via Inertia.js
     const { courses } = usePage().props;
 
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -28,24 +27,24 @@ export default function CourseTable() {
 
     const handleMenuClose = () => {
         setAnchorEl(null);
-        setSelectedCourse(null); // Clear the selected student after closing the menu
+        setSelectedCourse(null);
     };
 
     const handleEdit = () => {
-        Inertia.get(route("courses.edit", selectedCourse.id)); // Navigate to edit page
-        handleMenuClose(); // Close the menu after action
+        Inertia.get(route("courses.edit", selectedCourse.id));
+        handleMenuClose();
     };
 
     const handleDelete = () => {
         if (confirm("Are you sure you want to delete this course?")) {
-            Inertia.delete(route("courses.destroy", selectedCourse.id)); // Perform delete action
+            Inertia.delete(route("courses.destroy", selectedCourse.id));
         }
-        handleMenuClose(); // Close the menu after action
+        handleMenuClose();
     };
 
     const cardStyle = {
-        minHeight: "8em", // Set a minimum height
-        maxWidth: "100%", // Set a max width
+        minHeight: "8em",
+        maxWidth: "100%",
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",

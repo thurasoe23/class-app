@@ -10,10 +10,8 @@ class Student extends Model
 {
     use HasFactory, SoftDeletes;
 
-    // Define the table associated with the model (optional if the table name matches the plural form of the model)
     protected $table = 'students';
 
-    // Define which attributes can be mass-assigned
     protected $fillable = [
         'name',
         'phone_number',
@@ -24,7 +22,6 @@ class Student extends Model
         'facebook_username',
     ];
 
-    // If you want to cast fields like timestamps
     protected $dates = ['deleted_at'];
 
     public function courses()

@@ -31,19 +31,19 @@ export default function BatchTable() {
 
     const handleMenuClose = () => {
         setAnchorEl(null);
-        setSelectedBatch(null); // Clear the selected Batch after closing the menu
+        setSelectedBatch(null);
     };
 
     const handleEdit = () => {
-        Inertia.get(route("batches.edit", selectedBatch.id)); // Navigate to edit page
-        handleMenuClose(); // Close the menu after action
+        Inertia.get(route("batches.edit", selectedBatch.id));
+        handleMenuClose();
     };
 
     const handleDelete = () => {
         if (confirm("Are you sure you want to delete this Batch?")) {
-            Inertia.delete(route("batches.destroy", selectedBatch.id)); // Perform delete action
+            Inertia.delete(route("batches.destroy", selectedBatch.id));
         }
-        handleMenuClose(); // Close the menu after action
+        handleMenuClose();
     };
 
     return (

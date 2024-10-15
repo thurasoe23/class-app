@@ -16,7 +16,6 @@ class Course extends Model
         'course_fee',
     ];
 
-    // Define relationship with Batches
     public function batches()
     {
         return $this->hasMany(Batch::class);

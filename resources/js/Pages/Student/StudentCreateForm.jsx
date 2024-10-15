@@ -24,7 +24,7 @@ export default function StudentCreateForm() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        post(route("students.store")); // This will send a POST request to store the new student
+        post(route("students.store"));
     };
 
     return (
@@ -39,7 +39,6 @@ export default function StudentCreateForm() {
             <Box
                 onSubmit={handleSubmit}
                 sx={{ "& > :not(style)": { m: 1, width: "25ch" } }}
-                // sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}
                 component="form"
                 autoComplete="off"
             >   
@@ -112,10 +111,9 @@ export default function StudentCreateForm() {
                     <Button
                         variant="contained"
                         color="primary"
-                        // onClick={handleSubmit}
                         type="submit"
                         disabled={processing}
-                        sx={{ padding: "8px 16px" }} // Customize padding to match your design
+                        sx={{ padding: "8px 16px" }}
                     >
                         {processing ? "Submitting..." : "Submit"}
                     </Button>

@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 
 export default function BatchCreateForm() {
-    const { props } = usePage(); // Access the passed props, including courses
+    const { props } = usePage();
     const { data, setData, post, errors, processing } = useForm({
         course_id: "",
         batch_identifier: "",
@@ -23,7 +23,7 @@ export default function BatchCreateForm() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        post(route("batches.store")); // This will send a POST request to store the new batch
+        post(route("batches.store"));
     };
 
     return (
@@ -97,7 +97,7 @@ export default function BatchCreateForm() {
                         color="primary"
                         type="submit"
                         disabled={processing}
-                        sx={{ padding: "8px 16px" }} // Customize padding to match your design
+                        sx={{ padding: "8px 16px" }}
                     >
                         {processing ? "Submitting..." : "Submit"}
                     </Button>

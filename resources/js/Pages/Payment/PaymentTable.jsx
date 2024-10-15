@@ -12,7 +12,6 @@ import { Button } from "@mui/material";
 import { Inertia } from "@inertiajs/inertia";
 
 export default function PaymentTable() {
-    // Get the students data passed from the backend via Inertia.js
     const { payments } = usePage().props;
 
     return (

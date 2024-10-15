@@ -23,7 +23,7 @@ export default function CourseCreateForm() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        put(route("courses.update", course.id)); // This will send a POST request to store the new student
+        put(route("courses.update", course.id));
     };
 
     return (
@@ -38,7 +38,6 @@ export default function CourseCreateForm() {
             <Box
                 onSubmit={handleSubmit}
                 sx={{ "& > :not(style)": { m: 1, width: "25ch" } }}
-                // sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}
                 component="form"
                 autoComplete="off"
             >
@@ -81,7 +80,7 @@ export default function CourseCreateForm() {
                         color="primary"
                         type="submit"
                         disabled={processing}
-                        sx={{ padding: "8px 16px" }} // Customize padding to match your design
+                        sx={{ padding: "8px 16px" }}
                     >
                         {processing ? "Updating..." : "Update"}
                     </Button>

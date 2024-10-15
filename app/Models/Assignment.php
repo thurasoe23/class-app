@@ -17,7 +17,6 @@ class Assignment extends Model
         'status',
     ];
 
-    // Define relationships
     public function student()
     {
         return $this->belongsTo(Student::class);

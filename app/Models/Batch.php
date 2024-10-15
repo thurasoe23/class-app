@@ -16,7 +16,6 @@ class Batch extends Model
         'end_date',
     ];
 
-    // Define relationship to Course model
     public function course()
     {
         return $this->belongsTo(Course::class);

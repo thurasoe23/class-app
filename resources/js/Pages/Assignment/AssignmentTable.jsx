@@ -30,19 +30,19 @@ export default function AssignmentTable() {
 
     const handleMenuClose = () => {
         setAnchorEl(null);
-        setSelectedAssignment(null); // Clear the selected Batch after closing the menu
+        setSelectedAssignment(null);
     };
 
     const handleEdit = () => {
-        Inertia.get(route("assignments.edit", selectedAssignment.id)); // Navigate to edit page
-        handleMenuClose(); // Close the menu after action
+        Inertia.get(route("assignments.edit", selectedAssignment.id));
+        handleMenuClose();
     };
 
     const handleDelete = () => {
         if (confirm("Are you sure you want to delete this Batch?")) {
-            Inertia.delete(route("assignments.destroy", selectedAssignment.id)); // Perform delete action
+            Inertia.delete(route("assignments.destroy", selectedAssignment.id));
         }
-        handleMenuClose(); // Close the menu after action
+        handleMenuClose();
     };
 
     return (

@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 
 export default function AssignmentCreateForm() {
-    const { props } = usePage(); // Access the passed props, including courses, batches, and students
+    const { props } = usePage();
     const { data, setData, post, errors, processing } = useForm({
         student_id: "",
         batch_id: "",
@@ -22,23 +22,21 @@ export default function AssignmentCreateForm() {
         status: "",
     });
 
-    const [filteredBatches, setFilteredBatches] = useState(props.batches); // Initialize with all batches
+    const [filteredBatches, setFilteredBatches] = useState(props.batches);
 
-    // Effect to filter batches based on selected course
     useEffect(() => {
         if (data.course_id) {
             const filtered = props.batches.filter(batch => batch.course_id === data.course_id);
             setFilteredBatches(filtered);
-            // Reset the batch_id if the course changes
-            setData("batch_id", ""); // Clear batch selection
+            setData("batch_id", "");
         } else {
-            setFilteredBatches(props.batches); // Reset to all batches if no course selected
+            setFilteredBatches(props.batches);
         }
-    }, [data.course_id, props.batches]); // Dependency array
+    }, [data.course_id, props.batches]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        post(route("assignments.store")); // This will send a POST request to store the new assignment
+        post(route("assignments.store"));
     };
 
     return (
@@ -84,7 +82,7 @@ export default function AssignmentCreateForm() {
                     >
                         {filteredBatches.map((batch) => (
                             <MenuItem key={batch.id} value={batch.id}>
-                                {batch.batch_identifier} {/* Display the batch identifier */}
+                                {batch.batch_identifier}
                             </MenuItem>
                         ))}
                     </Select>
@@ -128,7 +126,7 @@ export default function AssignmentCreateForm() {
                         color="primary"
                         type="submit"
                         disabled={processing}
-                        sx={{ padding: "8px 16px" }} // Customize padding to match your design
+                        sx={{ padding: "8px 16px" }}
                     >
                         {processing ? "Submitting..." : "Submit"}
                     </Button>

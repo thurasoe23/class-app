@@ -13,36 +13,33 @@ import {
 } from "@mui/material";
 
 export default function AssignmentCreateForm() {
-    const { assignment, student, course, batch } = usePage().props; // Access the passed props
+    const { assignment, student, course, batch } = usePage().props;
 
-    // Initialize form data
     const { data, setData, put, errors, processing } = useForm({
         student_id: assignment.student_id || "",
-        batch_id: assignment.batch_id || "", // Set the initial batch ID based on the existing assignment
+        batch_id: assignment.batch_id || "",
         course_id: assignment.course_id || "",
         status: assignment.status || "",
     });
 
-    const [filteredBatches, setFilteredBatches] = useState(batch); // Initialize with all batches
+    const [filteredBatches, setFilteredBatches] = useState(batch);
 
-    // Effect to filter batches based on selected course
     useEffect(() => {
         if (data.course_id) {
             const filtered = batch.filter(b => b.course_id === data.course_id);
             setFilteredBatches(filtered);
 
-            // Ensure the existing batch is included in the filtered list
             if (!filtered.some(b => b.id === data.batch_id)) {
-                setData("batch_id", ""); // Clear batch selection if the existing batch is not valid
+                setData("batch_id", "");
             }
         } else {
-            setFilteredBatches(batch); // Reset to all batches if no course selected
+            setFilteredBatches(batch);
         }
-    }, [data.course_id, batch]); // Dependency array
+    }, [data.course_id, batch]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        put(route("assignments.update", assignment.id)); // This will send a PUT request to update the assignment
+        put(route("assignments.update", assignment.id));
     };
 
     return (
@@ -70,7 +67,7 @@ export default function AssignmentCreateForm() {
                         onChange={(e) => {
                             const selectedCourseId = e.target.value;
                             setData("course_id", selectedCourseId);
-                            setData("batch_id", ""); // Clear batch when changing course
+                            setData("batch_id", "");
                         }}
                     >
                         {course.map((course) => (
@@ -92,7 +89,7 @@ export default function AssignmentCreateForm() {
                     >
                         {filteredBatches.map((b) => (
                             <MenuItem key={b.id} value={b.id}>
-                                {b.batch_identifier} {/* Display the batch identifier */}
+                                {b.batch_identifier}
                             </MenuItem>
                         ))}
                     </Select>
@@ -136,7 +133,7 @@ export default function AssignmentCreateForm() {
                         color="primary"
                         type="submit"
                         disabled={processing}
-                        sx={{ padding: "8px 16px" }} // Customize padding to match your design
+                        sx={{ padding: "8px 16px" }}
                     >
                         {processing ? "Submitting..." : "Submit"}
                     </Button>

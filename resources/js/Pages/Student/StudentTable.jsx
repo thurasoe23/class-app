@@ -18,10 +18,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function StudentTable() {
-    // Get the students data passed from the backend via Inertia.js
     const { students } = usePage().props;
 
-    // State for managing the menu
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [selectedStudent, setSelectedStudent] = React.useState(null);
 
@@ -32,19 +30,19 @@ export default function StudentTable() {
 
     const handleMenuClose = () => {
         setAnchorEl(null);
-        setSelectedStudent(null); // Clear the selected student after closing the menu
+        setSelectedStudent(null);
     };
 
     const handleEdit = () => {
-        Inertia.get(route("students.edit", selectedStudent.id)); // Navigate to edit page
-        handleMenuClose(); // Close the menu after action
+        Inertia.get(route("students.edit", selectedStudent.id)); 
+        handleMenuClose();
     };
 
     const handleDelete = () => {
         if (confirm("Are you sure you want to delete this student?")) {
-            Inertia.delete(route("students.destroy", selectedStudent.id)); // Perform delete action
+            Inertia.delete(route("students.destroy", selectedStudent.id));
         }
-        handleMenuClose(); // Close the menu after action
+        handleMenuClose();
     };
 
     return (
