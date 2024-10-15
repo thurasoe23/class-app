@@ -58,6 +58,7 @@ class StudentController extends Controller
 
     public function edit(Student $student)
     {
+        $student->load('courses');
         $courses = Course::all();
         return Inertia::render('Student/StudentEditForm', [
             'student' => $student,

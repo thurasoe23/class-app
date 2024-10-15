@@ -14,8 +14,8 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function StudentTable() {
     const { students } = usePage().props;
@@ -34,7 +34,7 @@ export default function StudentTable() {
     };
 
     const handleEdit = () => {
-        Inertia.get(route("students.edit", selectedStudent.id)); 
+        Inertia.get(route("students.edit", selectedStudent.id));
         handleMenuClose();
     };
 
@@ -112,18 +112,22 @@ export default function StudentTable() {
                                     {student.city}
                                 </TableCell>
                                 <TableCell align="right">
-                {student.courses.length > 0 ? student.courses[0].name : 'Not registered'}
-            </TableCell>
-            <TableCell align="right">
-                {student.courses.length > 0 ? student.courses[0].pivot.status : 'N/A'}
-            </TableCell>
+                                    {student.courses.length > 0
+                                        ? student.courses[0].name
+                                        : "Not registered"}
+                                </TableCell>
+                                <TableCell align="right">
+                                    {student.courses.length > 0
+                                        ? student.courses[0].pivot.status
+                                        : "N/A"}
+                                </TableCell>
                                 <TableCell align="right">
                                     {student.telegram_username}
                                 </TableCell>
                                 <TableCell align="right">
                                     {student.facebook_username}
                                 </TableCell>
-                                <TableCell align="right" sx={{padding: 0}}>
+                                <TableCell align="right" sx={{ padding: 0 }}>
                                     <IconButton
                                         aria-label="more"
                                         aria-controls="long-menu"
@@ -153,8 +157,14 @@ export default function StudentTable() {
                     },
                 }}
             >
-                <MenuItem onClick={handleEdit}><EditIcon sx={{marginRight: 1}} />Edit</MenuItem>
-                <MenuItem onClick={handleDelete}><DeleteIcon sx={{marginRight: 1}} />Delete</MenuItem>
+                <MenuItem onClick={handleEdit}>
+                    <EditIcon sx={{ marginRight: 1 }} />
+                    Edit
+                </MenuItem>
+                <MenuItem onClick={handleDelete}>
+                    <DeleteIcon sx={{ marginRight: 1 }} />
+                    Delete
+                </MenuItem>
             </Menu>
         </AuthenticatedLayout>
     );

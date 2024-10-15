@@ -21,13 +21,13 @@ export default function StudentCreateForm({ courses }) {
         city: "",
         telegram_username: "",
         facebook_username: "",
-        course_id: "", // New field for selected course
-        status: "registered", // Default registration status
+        course_id: "",
+        status: "",
     });
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        post(route("students.store")); // POST request to store the new student and course registration
+        post(route("students.store"));
     };
 
     return (
@@ -125,7 +125,6 @@ export default function StudentCreateForm({ courses }) {
                         {courses.map((course) => (
                             <MenuItem key={course.id} value={course.id}>
                                 {course.name} ({course.course_level}){" "}
-                                {/* Ensure course has these properties */}
                             </MenuItem>
                         ))}
                     </Select>

@@ -25,7 +25,7 @@ class UpdateStudentRequest extends FormRequest
         return [
             'name' => 'string|max:255',
             'phone_number' => 'string|max:255',
-            'email' => 'email|unique:students,email',
+            'email' => 'email|unique:students,email,' . $this->student->id,
             'gender' => 'string',
             'city' => 'nullable|string|max:255',
             'telegram_username' => 'nullable|string|max:255',

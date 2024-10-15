@@ -1,6 +1,7 @@
 import * as React from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm, usePage } from "@inertiajs/react";
+import { useEffect } from "react";
 import {
     Button,
     Box,
@@ -12,10 +13,11 @@ import {
 } from "@mui/material";
 
 export default function StudentEditForm() {
-    // Retrieve the student data and available courses passed from the backend
+
     const { student, courses } = usePage().props;
 
-    // Initialize the form data with the existing student details
+    const currentCourse = student.courses && student.courses.length > 0 ? student.courses[0] : null;
+
     const { data, setData, put, errors, processing } = useForm({
         name: student.name || "",
         phone_number: student.phone_number || "",
@@ -24,14 +26,13 @@ export default function StudentEditForm() {
         city: student.city || "",
         telegram_username: student.telegram_username || "",
         facebook_username: student.facebook_username || "",
-        course_id: student.courses?.[0]?.id || "", // Safe access with optional chaining
-        status: student.courses?.[0]?.pivot?.status || "registered", // Default to 'registered' if no course
+        course_id: currentCourse ? currentCourse.id : "",
+        status: currentCourse?.pivot?.status || "registered",
     });
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Send a PUT request to update the student information
-        put(route("students.update", student.id)); // This will send a PUT request
+        put(route("students.update", student.id));
     };
 
     return (
@@ -112,7 +113,6 @@ export default function StudentEditForm() {
                     onChange={(e) => setData("facebook_username", e.target.value)}
                 />
 
-                {/* New fields for course and status */}
                 <FormControl fullWidth>
                     <InputLabel id="course-select-label">Course</InputLabel>
                     <Select
