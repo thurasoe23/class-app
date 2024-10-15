@@ -29,6 +29,11 @@ class Student extends Model
         return $this->belongsToMany(Course::class)->withPivot('status')->withTimestamps();
     }
 
+    public function batches()
+    {
+        return $this->belongsToMany(Batch::class)->withPivot('status')->withTimestamps();
+    }
+
     public function payments()
     {
         return $this->hasMany(Payment::class);

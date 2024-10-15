@@ -20,6 +20,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 export default function StudentTable() {
     const { students } = usePage().props;
 
+    console.log(students)
+
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [selectedStudent, setSelectedStudent] = React.useState(null);
 
@@ -73,6 +75,7 @@ export default function StudentTable() {
                             <TableCell align="right">Gender</TableCell>
                             <TableCell align="right">City</TableCell>
                             <TableCell align="right">Course</TableCell>
+                            <TableCell align="right">Batch</TableCell> {/* New column for Batch */}
                             <TableCell align="right">Status</TableCell>
                             <TableCell align="right">
                                 Telegram Username
@@ -115,6 +118,11 @@ export default function StudentTable() {
                                     {student.courses.length > 0
                                         ? student.courses[0].name
                                         : "Not registered"}
+                                </TableCell>
+                                <TableCell align="right">
+                                    {student.courses.length > 0 && student.courses[0].batches.length > 0
+                                        ? student.courses[0].batches[0].batch_identifier
+                                        : "N/A"} {/* Display Batch */}
                                 </TableCell>
                                 <TableCell align="right">
                                     {student.courses.length > 0

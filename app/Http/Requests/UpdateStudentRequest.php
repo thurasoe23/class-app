@@ -31,6 +31,7 @@ class UpdateStudentRequest extends FormRequest
             'telegram_username' => 'nullable|string|max:255',
             'facebook_username' => 'nullable|string|max:255',
             'course_id' => 'required|exists:courses,id',
+            'batch_id' => 'required|exists:batches,id',
             'status' => 'required|string',
         ];
     }

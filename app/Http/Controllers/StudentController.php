@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
+use App\Models\Batch;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use App\Models\Student;
@@ -15,7 +16,7 @@ class StudentController extends Controller
     {
         $status = $request->input('status', 'all');
 
-        $students = Student::with('courses')
+        $students = Student::with(['courses', 'courses.batches'])
             ->when($status !== 'all', function ($query) use ($status) {
                 $query->whereHas('courses', function ($q) use ($status) {
                     $q->where('status', $status);
@@ -28,7 +29,7 @@ class StudentController extends Controller
 
     public function create()
     {
-        $courses = Course::all();
+        $courses = Course::with('batches')->get();
         return Inertia::render('Student/StudentCreateForm', ['courses' => $courses]);
     }
 
@@ -46,7 +47,10 @@ class StudentController extends Controller
             'facebook_username',
         ]));
 
-        $student->courses()->attach($request->course_id, ['status' => $request->status]);
+        $student->courses()->attach($request->course_id, [
+            'status' => $request->status,
+            'batch_id' => $request->batch_id,
+        ]);
 
         return redirect()->route('students.index')->with('success', 'Student created successfully!');
     }
@@ -58,13 +62,16 @@ class StudentController extends Controller
 
     public function edit(Student $student)
     {
-        $student->load('courses');
-        $courses = Course::all();
+        $batches = Batch::all();
+
+        $student->load(['courses', 'courses.batches']);
+    
         return Inertia::render('Student/StudentEditForm', [
             'student' => $student,
-            'courses' => $courses,
+            'batch' => $batches
         ]);
     }
+    
 
     public function update(UpdateStudentRequest $request, Student $student)
     {
@@ -73,7 +80,7 @@ class StudentController extends Controller
         $student->courses()->detach();
 
         if ($request->course_id) {
-            $student->courses()->attach($request->course_id, ['status' => $request->status]);
+            $student->courses()->attach($request->course_id, ['status' => $request->status, 'batch_id' => $request->batch_id]);
         }
 
         return redirect()->route('students.index')->with('success', 'Student updated successfully!');

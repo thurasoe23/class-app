@@ -1,7 +1,7 @@
 import * as React from "react";
+import { useEffect, useState } from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm, usePage } from "@inertiajs/react";
-import { useEffect } from "react";
 import {
     Button,
     Box,
@@ -13,10 +13,7 @@ import {
 } from "@mui/material";
 
 export default function StudentEditForm() {
-
-    const { student, courses } = usePage().props;
-
-    const currentCourse = student.courses && student.courses.length > 0 ? student.courses[0] : null;
+    const { student, batch } = usePage().props;
 
     const { data, setData, put, errors, processing } = useForm({
         name: student.name || "",
@@ -26,9 +23,27 @@ export default function StudentEditForm() {
         city: student.city || "",
         telegram_username: student.telegram_username || "",
         facebook_username: student.facebook_username || "",
-        course_id: currentCourse ? currentCourse.id : "",
-        status: currentCourse?.pivot?.status || "registered",
+        course_id: student.courses?.[0]?.id || "",
+        batch_id: student.courses?.[0]?.batches?.[0]?.id || "",
+        status: student.courses?.[0]?.pivot?.status || "",
     });
+
+    const [filteredBatches, setFilteredBatches] = useState([]);
+
+    // Effect to update filtered batches and batch_id
+    useEffect(() => {
+        if (data.course_id) {
+            const selectedCourse = student.courses.find(course => course.id === data.course_id);
+            
+            if (selectedCourse && selectedCourse.batches) {
+                setFilteredBatches(selectedCourse.batches);
+                setData("batch_id", selectedCourse.batches[0]?.id || ""); // Set to first batch id if exists
+            } else {
+                setFilteredBatches([]);
+                setData("batch_id", ""); // Reset batch selection if no course or batches
+            }
+        }
+    }, [data.course_id, student.courses, setData]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -74,8 +89,7 @@ export default function StudentEditForm() {
                     onChange={(e) => setData("email", e.target.value)}
                     required
                 />
-
-                <FormControl>
+                <FormControl fullWidth required>
                     <InputLabel id="gender-select-label">Gender</InputLabel>
                     <Select
                         labelId="gender-select-label"
@@ -89,7 +103,6 @@ export default function StudentEditForm() {
                         <MenuItem value="Other">Other</MenuItem>
                     </Select>
                 </FormControl>
-
                 <TextField
                     id="outlined-basic"
                     label="City"
@@ -112,25 +125,39 @@ export default function StudentEditForm() {
                     value={data.facebook_username}
                     onChange={(e) => setData("facebook_username", e.target.value)}
                 />
-
-                <FormControl fullWidth>
-                    <InputLabel id="course-select-label">Course</InputLabel>
+                <FormControl fullWidth required>
+                    <InputLabel id="course-select-label">Select Course</InputLabel>
                     <Select
                         labelId="course-select-label"
                         id="course-select"
                         value={data.course_id}
-                        label="Course"
+                        label="Select Course"
                         onChange={(e) => setData("course_id", e.target.value)}
                     >
-                        {courses.map((course) => (
+                        {student.courses.map((course) => (
                             <MenuItem key={course.id} value={course.id}>
-                                {course.name} ({course.course_level})
+                                {`${course.name} (${course.course_level})`}
                             </MenuItem>
                         ))}
                     </Select>
                 </FormControl>
-
-                <FormControl fullWidth>
+                <FormControl fullWidth required>
+                    <InputLabel id="batch-select-label">Select Batch</InputLabel>
+                    <Select
+                        labelId="batch-select-label"
+                        id="batch-select"
+                        value={data.batch_id}
+                        label="Select Batch"
+                        onChange={(e) => setData("batch_id", e.target.value)}
+                    >
+                        {filteredBatches.map((batch) => (
+                            <MenuItem key={batch.id} value={batch.id}>
+                                {batch.batch_identifier}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+                <FormControl fullWidth required>
                     <InputLabel id="status-select-label">Status</InputLabel>
                     <Select
                         labelId="status-select-label"
@@ -144,7 +171,6 @@ export default function StudentEditForm() {
                         <MenuItem value="completed">Completed</MenuItem>
                     </Select>
                 </FormControl>
-
                 <div>
                     <Button
                         variant="contained"
@@ -153,7 +179,7 @@ export default function StudentEditForm() {
                         disabled={processing}
                         sx={{ padding: "8px 16px" }}
                     >
-                        {processing ? "Updating..." : "Update"}
+                        {processing ? "Submitting..." : "Submit"}
                     </Button>
                 </div>
             </Box>

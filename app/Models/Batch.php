@@ -21,6 +21,11 @@ class Batch extends Model
         return $this->belongsTo(Course::class);
     }
 
+    public function students()
+    {
+        return $this->belongsToMany(Student::class)->withPivot('status')->withTimestamps();
+    }
+
     public function assignments()
     {
         return $this->hasMany(Assignment::class);

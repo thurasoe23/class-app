@@ -1,6 +1,7 @@
 import * as React from "react";
+import { useEffect, useState } from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, useForm } from "@inertiajs/react";
+import { Head, useForm, usePage } from "@inertiajs/react";
 import {
     Button,
     Box,
@@ -12,7 +13,7 @@ import {
 } from "@mui/material";
 
 export default function StudentCreateForm({ courses }) {
-    // Accept courses as a prop
+
     const { data, setData, post, errors, processing } = useForm({
         name: "",
         phone_number: "",
@@ -22,8 +23,25 @@ export default function StudentCreateForm({ courses }) {
         telegram_username: "",
         facebook_username: "",
         course_id: "",
+        batch_id: "",
         status: "",
     });
+
+    // State to store filtered batches
+    const [filteredBatches, setFilteredBatches] = useState([]);
+
+    // Effect to filter batches based on selected course
+    useEffect(() => {
+        if (data.course_id) {
+            const selectedCourse = courses.find(course => course.id === data.course_id);
+            if (selectedCourse) {
+                setFilteredBatches(selectedCourse.batches); // Update batches based on selected course
+            } else {
+                setFilteredBatches([]); // No batches if no course selected
+            }
+            setData("batch_id", ""); // Reset batch selection when course changes
+        }
+    }, [data.course_id, courses]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -70,7 +88,7 @@ export default function StudentCreateForm({ courses }) {
                     required
                 />
 
-                <FormControl>
+                <FormControl fullWidth required>
                     <InputLabel id="gender-select-label">Gender</InputLabel>
                     <Select
                         labelId="gender-select-label"
@@ -99,38 +117,51 @@ export default function StudentCreateForm({ courses }) {
                     label="Telegram Username"
                     variant="outlined"
                     value={data.telegram_username}
-                    onChange={(e) =>
-                        setData("telegram_username", e.target.value)
-                    }
+                    onChange={(e) => setData("telegram_username", e.target.value)}
                 />
                 <TextField
                     id="outlined-basic"
                     label="Facebook Username"
                     variant="outlined"
                     value={data.facebook_username}
-                    onChange={(e) =>
-                        setData("facebook_username", e.target.value)
-                    }
+                    onChange={(e) => setData("facebook_username", e.target.value)}
                 />
 
-                <FormControl fullWidth>
-                    <InputLabel id="course-select-label">Course</InputLabel>
+                <FormControl fullWidth required>
+                    <InputLabel id="course-select-label">Select Course</InputLabel>
                     <Select
                         labelId="course-select-label"
                         id="course-select"
                         value={data.course_id}
-                        label="Course"
+                        label="Select Course"
                         onChange={(e) => setData("course_id", e.target.value)}
                     >
                         {courses.map((course) => (
                             <MenuItem key={course.id} value={course.id}>
-                                {course.name} ({course.course_level}){" "}
+                                {`${course.name} (${course.course_level})`}
                             </MenuItem>
                         ))}
                     </Select>
                 </FormControl>
 
-                <FormControl fullWidth>
+                <FormControl fullWidth required>
+                    <InputLabel id="batch-select-label">Select Batch</InputLabel>
+                    <Select
+                        labelId="batch-select-label"
+                        id="batch-select"
+                        value={data.batch_id}
+                        label="Select Batch"
+                        onChange={(e) => setData("batch_id", e.target.value)}
+                    >
+                        {filteredBatches.map((batch) => (
+                            <MenuItem key={batch.id} value={batch.id}>
+                                {batch.batch_identifier}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+
+                <FormControl fullWidth required>
                     <InputLabel id="status-select-label">Status</InputLabel>
                     <Select
                         labelId="status-select-label"
