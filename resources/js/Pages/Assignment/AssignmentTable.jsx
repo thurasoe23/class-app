@@ -8,11 +8,8 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, usePage } from "@inertiajs/react";
-import { Button } from "@mui/material";
+import { Button, IconButton, Menu, MenuItem } from "@mui/material";
 import { Inertia } from "@inertiajs/inertia";
-import IconButton from "@mui/material/IconButton";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -39,7 +36,7 @@ export default function AssignmentTable() {
     };
 
     const handleDelete = () => {
-        if (confirm("Are you sure you want to delete this Batch?")) {
+        if (confirm("Are you sure you want to delete this Assignment?")) {
             Inertia.delete(route("assignments.destroy", selectedAssignment.id));
         }
         handleMenuClose();
@@ -63,13 +60,14 @@ export default function AssignmentTable() {
         >
             <Head title="Assignments" />
             <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <Table sx={{ minWidth: 650 }} aria-label="assignments table">
                     <TableHead>
                         <TableRow>
                             <TableCell>ID</TableCell>
                             <TableCell>Student Name</TableCell>
                             <TableCell align="right">Batch Name</TableCell>
                             <TableCell align="right">Course Name</TableCell>
+                            <TableCell align="right">Course Level</TableCell>
                             <TableCell align="right">Status</TableCell>
                             <TableCell align="right">Actions</TableCell>
                         </TableRow>
@@ -84,17 +82,18 @@ export default function AssignmentTable() {
                                     },
                                 }}
                             >
-                                <TableCell align="left">
-                                    {assignment.id}
-                                </TableCell>
+                                <TableCell align="left">{assignment.id}</TableCell>
                                 <TableCell component="th" scope="row">
-                                    {assignment.student.name}
+                                    {assignment?.student_course_batch?.student?.name}
                                 </TableCell>
                                 <TableCell align="right">
-                                    {assignment.batch.batch_identifier}
+                                    {assignment?.student_course_batch?.batch?.batch_identifier}
                                 </TableCell>
                                 <TableCell align="right">
-                                    {`${assignment.course.name} (${assignment.course.course_level})`}
+                                    {assignment?.student_course_batch?.course?.name}
+                                </TableCell>
+                                <TableCell align="right">
+                                    {assignment?.student_course_batch?.course?.course_level}
                                 </TableCell>
                                 <TableCell align="right">
                                     {assignment.status}
@@ -102,11 +101,7 @@ export default function AssignmentTable() {
                                 <TableCell align="right" sx={{ padding: 0 }}>
                                     <IconButton
                                         aria-label="more"
-                                        aria-controls="long-menu"
-                                        aria-haspopup="true"
-                                        onClick={(event) =>
-                                            handleMenuOpen(event, assignment)
-                                        }
+                                        onClick={(event) => handleMenuOpen(event, assignment)}
                                     >
                                         <MoreVertIcon />
                                     </IconButton>
@@ -118,7 +113,6 @@ export default function AssignmentTable() {
             </TableContainer>
 
             <Menu
-                id="long-menu"
                 anchorEl={anchorEl}
                 open={Boolean(anchorEl)}
                 onClose={handleMenuClose}

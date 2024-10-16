@@ -1,46 +1,42 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Inertia } from "@inertiajs/inertia";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm, usePage } from "@inertiajs/react";
 import {
     Button,
     Box,
+    TextField,
     Select,
     MenuItem,
     FormControl,
     InputLabel,
+    Typography,
 } from "@mui/material";
 
-export default function AssignmentCreateForm() {
-    const { assignment, student, course, batch } = usePage().props;
-
-    const { data, setData, put, errors, processing } = useForm({
-        student_id: assignment.student_id || "",
-        batch_id: assignment.batch_id || "",
-        course_id: assignment.course_id || "",
-        status: assignment.status || "",
+export default function AssignmentEditForm() {
+    const { props } = usePage();
+    const { data, setData, post, errors, processing } = useForm({
+        student_course_batch_id: props.assignment.student_course_batch.id, // Use the nested batch ID
+        task: props.assignment.task || "",
+        status: props.assignment.status || "Pending", // Default to "Pending"
     });
 
-    const [filteredBatches, setFilteredBatches] = useState(batch);
-
     useEffect(() => {
-        if (data.course_id) {
-            const filtered = batch.filter(b => b.course_id === data.course_id);
-            setFilteredBatches(filtered);
-
-            if (!filtered.some(b => b.id === data.batch_id)) {
-                setData("batch_id", "");
-            }
-        } else {
-            setFilteredBatches(batch);
-        }
-    }, [data.course_id, batch]);
+        // Pre-fill form data with the existing assignment details
+        setData({
+            student_course_batch_id: props.assignment.student_course_batch.id,
+            task: props.assignment.task || "",
+            status: props.assignment.status || "Pending",
+        });
+    }, [props.assignment, setData]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        put(route("assignments.update", assignment.id));
+        post(route("assignments.update", props.assignment.id));
     };
+    
+    const selectedCourseBatch = props.assignment.student_course_batch;
 
     return (
         <AuthenticatedLayout
@@ -58,61 +54,50 @@ export default function AssignmentCreateForm() {
                 autoComplete="off"
             >
                 <FormControl fullWidth required>
-                    <InputLabel id="course_id">Select Course</InputLabel>
+                    <InputLabel id="student_course_batch_id">
+                        Select Student Course Batch
+                    </InputLabel>
                     <Select
-                        labelId="course_id"
-                        id="course_id"
-                        value={data.course_id}
-                        label="Select Course"
-                        onChange={(e) => {
-                            const selectedCourseId = e.target.value;
-                            setData("course_id", selectedCourseId);
-                            setData("batch_id", "");
-                        }}
+                        labelId="student_course_batch_id"
+                        id="student_course_batch_id"
+                        value={data.student_course_batch_id}
+                        label="Select Student Course Batch"
+                        onChange={(e) => setData("student_course_batch_id", e.target.value)}
                     >
-                        {course.map((course) => (
-                            <MenuItem key={course.id} value={course.id}>
-                                {`${course.name} (${course.course_level})`}
+                        {props.studentCourseBatches.map((courseBatch) => (
+                            <MenuItem key={courseBatch.id} value={courseBatch.id}>
+                                {`${courseBatch.student.name} - ${courseBatch.batch.batch_identifier} - ${courseBatch.course.name}`}
                             </MenuItem>
                         ))}
                     </Select>
                 </FormControl>
 
-                <FormControl fullWidth required>
-                    <InputLabel id="batch_id">Select Batch</InputLabel>
-                    <Select
-                        labelId="batch_id"
-                        id="batch_id"
-                        value={data.batch_id}
-                        label="Select Batch"
-                        onChange={(e) => setData("batch_id", e.target.value)}
-                    >
-                        {filteredBatches.map((b) => (
-                            <MenuItem key={b.id} value={b.id}>
-                                {b.batch_identifier}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
+                {selectedCourseBatch && (
+                    <Box mt={2}>
+                        <Typography variant="body1">
+                            Selected Student: {selectedCourseBatch.student.name}
+                        </Typography>
+                        <Typography variant="body1">
+                            Batch: {selectedCourseBatch.batch.batch_identifier}
+                        </Typography>
+                        <Typography variant="body1">
+                            Course: {selectedCourseBatch.course.name}
+                        </Typography>
+                    </Box>
+                )}
 
-                <FormControl fullWidth required>
-                    <InputLabel id="student_id">Select Student</InputLabel>
-                    <Select
-                        labelId="student_id"
-                        id="student_id"
-                        value={data.student_id}
-                        label="Select Student"
-                        onChange={(e) => setData("student_id", e.target.value)}
-                    >
-                        {student.map((s) => (
-                            <MenuItem key={s.id} value={s.id}>
-                                {s.name}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
+                <TextField
+                    required
+                    label="Task"
+                    variant="outlined"
+                    fullWidth
+                    value={data.task}
+                    onChange={(e) => setData("task", e.target.value)}
+                    error={Boolean(errors.task)}
+                    helperText={errors.task}
+                />
 
-                <FormControl fullWidth required>
+                <FormControl fullWidth>
                     <InputLabel id="status">Status</InputLabel>
                     <Select
                         labelId="status"
@@ -135,7 +120,7 @@ export default function AssignmentCreateForm() {
                         disabled={processing}
                         sx={{ padding: "8px 16px" }}
                     >
-                        {processing ? "Submitting..." : "Submit"}
+                        {processing ? "Updating..." : "Update"}
                     </Button>
                 </div>
             </Box>

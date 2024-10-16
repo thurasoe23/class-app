@@ -23,10 +23,9 @@ class StoreAssignmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'student_id' => 'required|exists:students,id',
-            'batch_id' => 'required|exists:batches,id',
-            'course_id' => 'required|exists:courses,id',
-            'status' => 'required|string',
+            'student_course_batch_id' => 'required|exists:student_course_batches,id', // Update this line
+            'task' => 'required|string|max:255', // Add task validation
+            'status' => 'required|string|in:Pending,Done,Failed', // Ensure status is one of the allowed values
         ];
     }
 }

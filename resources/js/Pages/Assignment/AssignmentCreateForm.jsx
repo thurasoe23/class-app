@@ -11,33 +11,27 @@ import {
     MenuItem,
     FormControl,
     InputLabel,
+    Typography,
 } from "@mui/material";
 
 export default function AssignmentCreateForm() {
     const { props } = usePage();
     const { data, setData, post, errors, processing } = useForm({
-        student_id: "",
-        batch_id: "",
-        course_id: "",
+        student_course_batch_id: "",
+        task: "",
         status: "",
     });
-
-    const [filteredBatches, setFilteredBatches] = useState(props.batches);
-
-    useEffect(() => {
-        if (data.course_id) {
-            const filtered = props.batches.filter(batch => batch.course_id === data.course_id);
-            setFilteredBatches(filtered);
-            setData("batch_id", "");
-        } else {
-            setFilteredBatches(props.batches);
-        }
-    }, [data.course_id, props.batches]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
         post(route("assignments.store"));
     };
+
+    console.log(props.studentCourseBatches)
+
+    const selectedCourseBatch = props.studentCourseBatches.find(
+        (courseBatch) => courseBatch.id === data.student_course_batch_id
+    );
 
     return (
         <AuthenticatedLayout
@@ -55,57 +49,55 @@ export default function AssignmentCreateForm() {
                 autoComplete="off"
             >
                 <FormControl fullWidth required>
-                    <InputLabel id="course_id">Select Course</InputLabel>
+                    <InputLabel id="student_course_batch_id">
+                        Select Student Course Batch
+                    </InputLabel>
                     <Select
-                        labelId="course_id"
-                        id="course_id"
-                        value={data.course_id}
-                        label="Select Course"
-                        onChange={(e) => setData("course_id", e.target.value)}
+                        labelId="student_course_batch_id"
+                        id="student_course_batch_id"
+                        value={data.student_course_batch_id}
+                        label="Select Student Course Batch"
+                        onChange={(e) =>
+                            setData("student_course_batch_id", e.target.value)
+                        }
                     >
-                        {props.courses.map((course) => (
-                            <MenuItem key={course.id} value={course.id}>
-                                {`${course.name} (${course.course_level})`}
+                        {props.studentCourseBatches.map((courseBatch) => (
+                            <MenuItem
+                                key={courseBatch.id}
+                                value={courseBatch.id}
+                            >
+                                {`${courseBatch.student.name} - ${courseBatch.batch.batch_identifier} - ${courseBatch.course.name}`}
                             </MenuItem>
                         ))}
                     </Select>
                 </FormControl>
 
-                <FormControl fullWidth required>
-                    <InputLabel id="batch_id">Select Batch</InputLabel>
-                    <Select
-                        labelId="batch_id"
-                        id="batch_id"
-                        value={data.batch_id}
-                        label="Select Batch"
-                        onChange={(e) => setData("batch_id", e.target.value)}
-                    >
-                        {filteredBatches.map((batch) => (
-                            <MenuItem key={batch.id} value={batch.id}>
-                                {batch.batch_identifier}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
+                {selectedCourseBatch && (
+                    <Box mt={2}>
+                        <Typography variant="body1">
+                            Selected Student: {selectedCourseBatch.student.name}
+                        </Typography>
+                        <Typography variant="body1">
+                            Batch: {selectedCourseBatch.batch.batch_identifier}
+                        </Typography>
+                        <Typography variant="body1">
+                            Course: {selectedCourseBatch.course.name}
+                        </Typography>
+                    </Box>
+                )}
 
-                <FormControl fullWidth required>
-                    <InputLabel id="student_id">Select Student</InputLabel>
-                    <Select
-                        labelId="student_id"
-                        id="student_id"
-                        value={data.student_id}
-                        label="Select Student"
-                        onChange={(e) => setData("student_id", e.target.value)}
-                    >
-                        {props.students.map((student) => (
-                            <MenuItem key={student.id} value={student.id}>
-                                {student.name}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
+                <TextField
+                    required
+                    label="Task"
+                    variant="outlined"
+                    fullWidth
+                    value={data.task}
+                    onChange={(e) => setData("task", e.target.value)}
+                    error={Boolean(errors.task)}
+                    helperText={errors.task}
+                />
 
-                <FormControl>
+                <FormControl fullWidth>
                     <InputLabel id="status">Status</InputLabel>
                     <Select
                         labelId="status"
