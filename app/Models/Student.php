@@ -19,7 +19,6 @@ class Student extends Model
         'gender',
         'city',
         'telegram_username',
-        'facebook_username',
     ];
 
     protected $dates = ['deleted_at'];
@@ -29,8 +28,18 @@ class Student extends Model
         return $this->hasMany(Payment::class);
     }
 
+    public function studentCourseBatches()
+    {
+        return $this->hasMany(StudentCourseBatch::class);
+    }
+
     public function assignments()
     {
-        return $this->hasMany(Assignment::class);
+        return $this->hasManyThrough(Assignment::class, StudentCourseBatch::class);
     }
+
+    // public function courseHistory()
+    // {
+    //     return $this->hasMany(CourseHistory::class);
+    // }
 }

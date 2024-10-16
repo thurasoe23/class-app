@@ -11,17 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('batches', function (Blueprint $table) {
+        Schema::create('student_course_batches', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('student_id');
             $table->unsignedBigInteger('course_id');
-            $table->string('batch_identifier');
-            $table->date('start_date');
-            $table->date('end_date');
+            $table->unsignedBigInteger('batch_id');
+            $table->timestamp('enrollment_date');
+            $table->string('status', 20);
             $table->timestamps();
             $table->softDeletes();
-            
-            // Foreign key constraint
+
+            $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
             $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
+            $table->foreign('batch_id')->references('id')->on('batches')->onDelete('cascade');
         });
     }
 
@@ -30,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('batches');
+        Schema::dropIfExists('student_course_batches');
     }
 };

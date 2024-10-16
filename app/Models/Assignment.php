@@ -11,24 +11,13 @@ class Assignment extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'student_id',
-        'batch_id',
-        'course_id',
+        'student_course_batch_id',
+        'task',
         'status',
     ];
 
-    public function student()
+    public function studentCourseBatch()
     {
-        return $this->belongsTo(Student::class);
-    }
-
-    public function batch()
-    {
-        return $this->belongsTo(Batch::class);
-    }
-
-    public function course()
-    {
-        return $this->belongsTo(Course::class);
+        return $this->belongsTo(StudentCourseBatch::class);
     }
 }

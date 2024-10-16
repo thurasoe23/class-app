@@ -12,18 +12,12 @@ class Payment extends Model
 
     protected $fillable = [
         'type',
-        'student_id',
-        'course_id',
+        'student_course_batch_id',
         'amount',
     ];
 
-    public function student()
+    public function studentCourseBatch()
     {
-        return $this->belongsTo(Student::class);
-    }
-
-    public function course()
-    {
-        return $this->belongsTo(Course::class);
+        return $this->belongsTo(StudentCourseBatch::class); // Updated relationship
     }
 }

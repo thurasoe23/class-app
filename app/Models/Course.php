@@ -21,8 +21,13 @@ class Course extends Model
         return $this->hasMany(Batch::class);
     }
 
+    public function studentCourseBatches()
+    {
+        return $this->hasMany(StudentCourseBatch::class);
+    }
+
     public function assignments()
     {
-        return $this->hasMany(Assignment::class);
+        return $this->hasManyThrough(Assignment::class, StudentCourseBatch::class);
     }
 }

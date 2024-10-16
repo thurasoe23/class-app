@@ -22,8 +22,13 @@ class Batch extends Model
         return $this->belongsTo(Course::class);
     }
 
+    public function studentCourseBatches()
+    {
+        return $this->hasMany(StudentCourseBatch::class);
+    }
+
     public function assignments()
     {
-        return $this->hasMany(Assignment::class);
+        return $this->hasManyThrough(Assignment::class, StudentCourseBatch::class);
     }
 }

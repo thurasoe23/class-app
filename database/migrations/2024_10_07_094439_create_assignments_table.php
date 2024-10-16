@@ -13,17 +13,13 @@ return new class extends Migration
     {
         Schema::create('assignments', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('student_id');  // Link to students
-            $table->unsignedBigInteger('batch_id');    // Link to batches
-            $table->unsignedBigInteger('course_id');   // Link to courses
-            $table->string('status');
+            $table->unsignedBigInteger('student_course_batch_id');
+            $table->string('task');
+            $table->string('status', 20);
             $table->timestamps();
             $table->softDeletes();
-        
-            // Foreign key constraints
-            $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
-            $table->foreign('batch_id')->references('id')->on('batches')->onDelete('cascade');
-            $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
+
+            $table->foreign('student_course_batch_id')->references('id')->on('student_course_batches')->onDelete('cascade');
         });
     }
 
