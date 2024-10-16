@@ -11,6 +11,10 @@ import {
     InputLabel,
 } from "@mui/material";
 import { formattedDate } from "@/utilities/dateUtils";
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs from 'dayjs';
 
 export default function StudentCourseBatchEditForm({ students, courses, batches, scb }) {
     const { data, setData, put, errors, processing } = useForm({
@@ -60,6 +64,7 @@ export default function StudentCourseBatchEditForm({ students, courses, batches,
                     <Select
                         labelId="student-select-label"
                         value={data.student_id}
+                        label="Student"
                         onChange={(e) => setData("student_id", e.target.value)}
                     >
                         {students.map(student => (
@@ -72,6 +77,7 @@ export default function StudentCourseBatchEditForm({ students, courses, batches,
                     <InputLabel id="course-select-label">Course</InputLabel>
                     <Select
                         labelId="course-select-label"
+                        label="Course"
                         value={data.course_id}
                         onChange={(e) => setData("course_id", e.target.value)}
                     >
@@ -85,6 +91,7 @@ export default function StudentCourseBatchEditForm({ students, courses, batches,
                     <InputLabel id="batch-select-label">Batch</InputLabel>
                     <Select
                         labelId="batch-select-label"
+                        label="Batch"
                         value={data.batch_id}
                         onChange={(e) => setData("batch_id", e.target.value)}
                     >
@@ -98,17 +105,25 @@ export default function StudentCourseBatchEditForm({ students, courses, batches,
                     </Select>
                 </FormControl>
 
-                <TextField
-                    label="Enrollment Date"
-                    variant="outlined"
-                    type="date"
-                    value={data.enrollment_date}
-                    onChange={(e) => setData("enrollment_date", e.target.value)}
-                    required
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                />
+                <FormControl>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                        label="Enrollment Date"
+                        value={data.enrollment_date ? dayjs(data.enrollment_date) : null}
+                        onChange={(newValue) => {
+                            const formattedDate = newValue ? newValue.format('YYYY-MM-DD HH:mm:ss') : "";
+                            setData("enrollment_date", formattedDate);
+                        }}
+                        renderInput={(params) => (
+                            <TextField 
+                                {...params}
+                                required
+                                fullWidth
+                            />
+                        )}
+                    />
+                </LocalizationProvider>
+                </FormControl>
 
                 <TextField
                     label="Status"

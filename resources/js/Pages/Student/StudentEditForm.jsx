@@ -23,7 +23,6 @@ export default function StudentEditForm() {
         gender: student.gender || "",
         city: student.city || "",
         telegram_username: student.telegram_username || "",
-        facebook_username: student.facebook_username || "",
     });
 
     const handleSubmit = (e) => {
@@ -103,13 +102,6 @@ export default function StudentEditForm() {
                     variant="outlined"
                     value={data.telegram_username}
                     onChange={(e) => setData("telegram_username", e.target.value)}
-                />
-                <TextField
-                    id="outlined-basic"
-                    label="Facebook Username"
-                    variant="outlined"
-                    value={data.facebook_username}
-                    onChange={(e) => setData("facebook_username", e.target.value)}
                 />
 
                 <div>
