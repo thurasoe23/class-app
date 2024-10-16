@@ -87,6 +87,14 @@ export default function Authenticated({ header, children }) {
                     <AssignmentIcon sx={{ marginRight: 2, color: "gray" }} />
                     <ListItemText primary="Assignments" />
                 </ListItem>
+                <ListItem
+                    button
+                    component="a"
+                    href={route("attendances.index")}
+                >
+                    <AssignmentIcon sx={{ marginRight: 2, color: "gray" }} />
+                    <ListItemText primary="Attendances" />
+                </ListItem>
                 <ListItem button component="a" href={route("payments.index")}>
                     <PaymentIcon sx={{ marginRight: 2, color: "gray" }} />
                     <ListItemText primary="Payments" />

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AssignmentController;
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\BatchController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\PaymentController;
@@ -40,8 +41,12 @@ Route::middleware('auth')->group(function () {
     Route::resource('courses', CourseController::class);
     Route::resource('batches', BatchController::class);
     Route::resource('student-course-batches', StudentCourseBatchController::class);
+
     Route::resource('assignments', AssignmentController::class);
     Route::post('/assignments/bulk-assign', [AssignmentController::class, 'bulkAssign'])->name('assignments.bulkAssign');
+
+    Route::resource('attendances', AttendanceController::class);
+    Route::post('/attendances/bulkAssign', [AttendanceController::class, 'bulkAssign'])->name('attendances.bulkAssign');
 
     Route::resource('payments', PaymentController::class);
 });
