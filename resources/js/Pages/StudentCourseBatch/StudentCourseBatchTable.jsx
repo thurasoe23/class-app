@@ -16,6 +16,7 @@ import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { formattedDate } from "@/utilities/dateUtils";
 
 export default function StudentCourseBatchTable() {
     const { studentCourseBatches } = usePage().props;
@@ -92,13 +93,13 @@ export default function StudentCourseBatchTable() {
                                     {batch.student.name}
                                 </TableCell>
                                 <TableCell component="th" scope="row">
-                                    {batch.course.name}
+                                {`${batch.course.name} (${batch.course.course_level})`}
                                 </TableCell>
                                 <TableCell component="th" scope="row">
                                     {batch.batch.batch_identifier}
                                 </TableCell>
                                 <TableCell align="right">
-                                    {batch.enrollment_date}
+                                    {formattedDate(batch.enrollment_date)}
                                 </TableCell>
                                 <TableCell align="right">
                                     {batch.status}

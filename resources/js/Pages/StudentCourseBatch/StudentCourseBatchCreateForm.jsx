@@ -20,8 +20,21 @@ export default function StudentCourseBatchCreateForm({ students, courses, batche
         status: "",
     });
 
+    const [filteredBatches, setFilteredBatches] = React.useState(batches); // Initialize with all batches
+
+    React.useEffect(() => {
+        if (data.course_id) {
+            const filtered = batches.filter(batch => batch.course_id === data.course_id);
+            setFilteredBatches(filtered);
+            setData("batch_id", "");
+        } else {
+            setFilteredBatches(batches);
+        }
+    }, [data.course_id, batches]);
+
     const handleSubmit = (e) => {
         e.preventDefault();
+
         post(route("student-course-batches.store"));
     };
 
@@ -61,21 +74,25 @@ export default function StudentCourseBatchCreateForm({ students, courses, batche
                         onChange={(e) => setData("course_id", e.target.value)}
                     >
                         {courses.map(course => (
-                            <MenuItem key={course.id} value={course.id}>{course.name}</MenuItem>
+                            <MenuItem key={course.id} value={course.id}>{`${course.name} (${course.course_level})`}</MenuItem>
                         ))}
                     </Select>
                 </FormControl>
 
-                <FormControl fullWidth required>
+                <FormControl fullWidth required disabled={!data.course_id}>
                     <InputLabel id="batch-select-label">Batch</InputLabel>
                     <Select
                         labelId="batch-select-label"
                         value={data.batch_id}
                         onChange={(e) => setData("batch_id", e.target.value)}
                     >
-                        {batches.map(batch => (
-                            <MenuItem key={batch.id} value={batch.id}>{batch.batch_identifier}</MenuItem>
-                        ))}
+                        {filteredBatches.length > 0 ? (
+                            filteredBatches.map(batch => (
+                                <MenuItem key={batch.id} value={batch.id}>{batch.batch_identifier}</MenuItem>
+                            ))
+                        ) : (
+                            <MenuItem disabled>No Batches Available</MenuItem>
+                        )}
                     </Select>
                 </FormControl>
 

@@ -24,7 +24,7 @@ class StudentCourseBatchController extends Controller
         $courses = Course::all();
         $batches = Batch::all();
 
-        return Inertia::render('StudentCourseBatch/StudentCourseBatchCreate', [
+        return Inertia::render('StudentCourseBatch/StudentCourseBatchCreateForm', [
             'students' => $students,
             'courses' => $courses,
             'batches' => $batches,
@@ -48,8 +48,8 @@ class StudentCourseBatchController extends Controller
         $courses = Course::all();
         $batches = Batch::all();
 
-        return Inertia::render('StudentCourseBatch/Edit', [
-            'studentCourseBatch' => $studentCourseBatch,
+        return Inertia::render('StudentCourseBatch/StudentCourseBatchEditForm', [
+            'scb' => $studentCourseBatch,
             'students' => $students,
             'courses' => $courses,
             'batches' => $batches,
