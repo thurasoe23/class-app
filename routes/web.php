@@ -41,6 +41,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('batches', BatchController::class);
     Route::resource('student-course-batches', StudentCourseBatchController::class);
     Route::resource('assignments', AssignmentController::class);
+    Route::post('/assignments/bulk-assign', [AssignmentController::class, 'bulkAssign'])->name('assignments.bulkAssign');
+
     Route::resource('payments', PaymentController::class);
 });
 

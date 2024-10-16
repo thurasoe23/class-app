@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useEffect } from "react";
 import { Inertia } from "@inertiajs/inertia";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm, usePage } from "@inertiajs/react";
@@ -16,24 +15,15 @@ import {
 
 export default function AssignmentEditForm() {
     const { props } = usePage();
-    const { data, setData, post, errors, processing } = useForm({
-        student_course_batch_id: props.assignment.student_course_batch.id, // Use the nested batch ID
+    const { data, setData, put, errors, processing } = useForm({
+        student_course_batch_id: props.assignment.student_course_batch.id, // Initialize with the current assignment's student course batch
         task: props.assignment.task || "",
         status: props.assignment.status || "Pending", // Default to "Pending"
     });
 
-    useEffect(() => {
-        // Pre-fill form data with the existing assignment details
-        setData({
-            student_course_batch_id: props.assignment.student_course_batch.id,
-            task: props.assignment.task || "",
-            status: props.assignment.status || "Pending",
-        });
-    }, [props.assignment, setData]);
-
     const handleSubmit = (e) => {
         e.preventDefault();
-        post(route("assignments.update", props.assignment.id));
+        put(route("assignments.update", props.assignment.id)); // Use PUT method for updating
     };
     
     const selectedCourseBatch = props.assignment.student_course_batch;
@@ -53,6 +43,7 @@ export default function AssignmentEditForm() {
                 component="form"
                 autoComplete="off"
             >
+                {/* Dropdown for selecting Student Course Batch */}
                 <FormControl fullWidth required>
                     <InputLabel id="student_course_batch_id">
                         Select Student Course Batch
@@ -72,6 +63,7 @@ export default function AssignmentEditForm() {
                     </Select>
                 </FormControl>
 
+                {/* Display Selected Course Batch Information */}
                 {selectedCourseBatch && (
                     <Box mt={2}>
                         <Typography variant="body1">
@@ -86,6 +78,7 @@ export default function AssignmentEditForm() {
                     </Box>
                 )}
 
+                {/* Task Input */}
                 <TextField
                     required
                     label="Task"
@@ -97,6 +90,7 @@ export default function AssignmentEditForm() {
                     helperText={errors.task}
                 />
 
+                {/* Status Dropdown */}
                 <FormControl fullWidth>
                     <InputLabel id="status">Status</InputLabel>
                     <Select
@@ -112,6 +106,7 @@ export default function AssignmentEditForm() {
                     </Select>
                 </FormControl>
 
+                {/* Submit Button */}
                 <div>
                     <Button
                         variant="contained"

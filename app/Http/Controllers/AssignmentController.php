@@ -35,6 +35,8 @@ class AssignmentController extends Controller
     public function create()
     {
         return Inertia::render('Assignment/AssignmentCreateForm', [
+            'courses' => Course::all(),  // Fetch all courses for selection
+            'batches' => Batch::all(),   // Fetch all batches for selection
             'studentCourseBatches' => StudentCourseBatch::with(['student', 'batch', 'course'])->get(),
         ]);
     }
@@ -51,6 +53,33 @@ class AssignmentController extends Controller
 
         return redirect()->route('assignments.index')->with('success', 'Assignment created successfully');
     }
+
+    public function bulkAssign(StoreAssignmentRequest $request)
+    {
+        // Proceed with creating assignments as per the previous guidance
+        $validated = $request->validated(); // Get the validated data
+    
+        foreach ($validated['selected_students'] as $studentId) {
+            $studentCourseBatch = StudentCourseBatch::where('student_id', $studentId)
+                ->where('course_id', $validated['course_id'])
+                ->where('batch_id', $validated['batch_id'])
+                ->first();
+    
+            if ($studentCourseBatch) {
+                Assignment::create([
+                    'student_course_batch_id' => $studentCourseBatch->id,
+                    'task' => $validated['task'],
+                    'status' => $validated['status'],
+                ]);
+            }
+        }
+    
+        return redirect()->route('assignments.index')->with('success', 'Assignments created successfully.');
+    }
+    
+    
+
+
 
     /**
      * Display the specified assignment.

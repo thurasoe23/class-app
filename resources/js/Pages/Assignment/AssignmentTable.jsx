@@ -68,6 +68,7 @@ export default function AssignmentTable() {
                             <TableCell align="right">Batch Name</TableCell>
                             <TableCell align="right">Course Name</TableCell>
                             <TableCell align="right">Course Level</TableCell>
+                            <TableCell align="right">Task</TableCell>
                             <TableCell align="right">Status</TableCell>
                             <TableCell align="right">Actions</TableCell>
                         </TableRow>
@@ -94,6 +95,9 @@ export default function AssignmentTable() {
                                 </TableCell>
                                 <TableCell align="right">
                                     {assignment?.student_course_batch?.course?.course_level}
+                                </TableCell>
+                                <TableCell align="right">
+                                    {assignment.task}
                                 </TableCell>
                                 <TableCell align="right">
                                     {assignment.status}
