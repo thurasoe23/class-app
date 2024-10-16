@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class StoreStudentCourseBatchRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class StoreStudentCourseBatchRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return Auth::check();
     }
 
     /**
@@ -22,7 +23,11 @@ class StoreStudentCourseBatchRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'student_id' => 'required|exists:students,id',
+            'course_id' => 'required|exists:courses,id',
+            'batch_id' => 'required|exists:batches,id',
+            'enrollment_date' => 'required|date',
+            'status' => 'required|string',
         ];
     }
 }

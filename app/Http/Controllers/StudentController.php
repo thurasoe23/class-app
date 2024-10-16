@@ -38,16 +38,14 @@ class StudentController extends Controller
 
     public function update(UpdateStudentRequest $request, Student $student)
     {
-        // Update the student record with validated data
         $student->update($request->validated());
 
-        // Redirect to the students index page with a success message
         return redirect()->route('students.index')->with('success', 'Student updated successfully!');
     }
 
     public function destroy(Student $student)
     {
-        $student->delete();  // Directly delete the student
+        $student->delete();
 
         return redirect()->route('students.index')->with('success', 'Student deleted successfully!');
     }

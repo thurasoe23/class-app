@@ -17,30 +17,30 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-export default function StudentTable() {
-    const { students } = usePage().props;
+export default function StudentCourseBatchTable() {
+    const { studentCourseBatches } = usePage().props;
 
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const [selectedStudent, setSelectedStudent] = React.useState(null);
+    const [selectedBatch, setSelectedBatch] = React.useState(null);
 
-    const handleMenuOpen = (event, student) => {
+    const handleMenuOpen = (event, batch) => {
         setAnchorEl(event.currentTarget);
-        setSelectedStudent(student);
+        setSelectedBatch(batch);
     };
 
     const handleMenuClose = () => {
         setAnchorEl(null);
-        setSelectedStudent(null);
+        setSelectedBatch(null);
     };
 
     const handleEdit = () => {
-        Inertia.get(route("students.edit", selectedStudent.id)); 
+        Inertia.get(route("student-course-batches.edit", selectedBatch.id)); 
         handleMenuClose();
     };
 
     const handleDelete = () => {
-        if (confirm("Are you sure you want to delete this student?")) {
-            Inertia.delete(route("students.destroy", selectedStudent.id));
+        if (confirm("Are you sure you want to delete this student course batch?")) {
+            Inertia.delete(route("student-course-batches.destroy", selectedBatch.id));
         }
         handleMenuClose();
     };
@@ -50,38 +50,35 @@ export default function StudentTable() {
             header={
                 <div className="flex justify-between items-center">
                     <h2 className="text-xl font-semibold leading-tight text-black">
-                        Students List
+                        Student Course Batches
                     </h2>
                     <Button
                         variant="contained"
-                        onClick={() => Inertia.get(route("students.create"))}
+                        onClick={() => Inertia.get(route("student-course-batches.create"))}
                     >
-                        Add New Student
+                        Enroll Student
                     </Button>
                 </div>
             }
         >
-            <Head title="Students" />
+            <Head title="Student Course Batches" />
             <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="students table">
+                <Table sx={{ minWidth: 650 }} aria-label="student course batches table">
                     <TableHead>
                         <TableRow>
                             <TableCell>ID</TableCell>
-                            <TableCell>Student Name</TableCell>
-                            <TableCell align="right">Phone Number</TableCell>
-                            <TableCell align="right">Email</TableCell>
-                            <TableCell align="right">Gender</TableCell>
-                            <TableCell align="right">City</TableCell>
-                            <TableCell align="right">
-                                Telegram Username
-                            </TableCell>
+                            <TableCell>Student</TableCell>
+                            <TableCell>Course</TableCell>
+                            <TableCell>Batch</TableCell>
+                            <TableCell align="right">Enrollment Date</TableCell>
+                            <TableCell align="right">Status</TableCell>
                             <TableCell align="right">Actions</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {students.map((student) => (
+                        {studentCourseBatches.map((batch) => (
                             <TableRow
-                                key={student.id}
+                                key={batch.id}
                                 sx={{
                                     "&:last-child td, &:last-child th": {
                                         border: 0,
@@ -89,25 +86,22 @@ export default function StudentTable() {
                                 }}
                             >
                                 <TableCell component="th" scope="row">
-                                    {student.id}
+                                    {batch.id}
                                 </TableCell>
                                 <TableCell component="th" scope="row">
-                                    {student.name}
+                                    {batch.student.name}
+                                </TableCell>
+                                <TableCell component="th" scope="row">
+                                    {batch.course.name}
+                                </TableCell>
+                                <TableCell component="th" scope="row">
+                                    {batch.batch.batch_identifier}
                                 </TableCell>
                                 <TableCell align="right">
-                                    {student.phone_number}
+                                    {batch.enrollment_date}
                                 </TableCell>
                                 <TableCell align="right">
-                                    {student.email}
-                                </TableCell>
-                                <TableCell align="right">
-                                    {student.gender}
-                                </TableCell>
-                                <TableCell align="right">
-                                    {student.city}
-                                </TableCell>
-                                <TableCell align="right">
-                                    {student.telegram_username}
+                                    {batch.status}
                                 </TableCell>
                                 <TableCell align="right" sx={{padding: 0}}>
                                     <IconButton
@@ -115,7 +109,7 @@ export default function StudentTable() {
                                         aria-controls="long-menu"
                                         aria-haspopup="true"
                                         onClick={(event) =>
-                                            handleMenuOpen(event, student)
+                                            handleMenuOpen(event, batch)
                                         }
                                     >
                                         <MoreVertIcon />

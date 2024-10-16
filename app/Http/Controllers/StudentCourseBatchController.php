@@ -5,62 +5,66 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreStudentCourseBatchRequest;
 use App\Http\Requests\UpdateStudentCourseBatchRequest;
 use App\Models\StudentCourseBatch;
+use App\Models\Student;
+use App\Models\Course;
+use App\Models\Batch;
+use Inertia\Inertia;
 
 class StudentCourseBatchController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $studentCourseBatches = StudentCourseBatch::with(['student', 'course', 'batch'])->get();
+        return Inertia::render('StudentCourseBatch/StudentCourseBatchTable', ['studentCourseBatches' => $studentCourseBatches]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $students = Student::all();
+        $courses = Course::all();
+        $batches = Batch::all();
+
+        return Inertia::render('StudentCourseBatch/StudentCourseBatchCreate', [
+            'students' => $students,
+            'courses' => $courses,
+            'batches' => $batches,
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreStudentCourseBatchRequest $request)
     {
-        //
+        StudentCourseBatch::create($request->validated());
+        return redirect()->route('student-course-batches.index')->with('success', 'Student Course Batch created successfully!');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(StudentCourseBatch $studentCourseBatch)
     {
-        //
+        return Inertia::render('StudentCourseBatch/Show', ['studentCourseBatch' => $studentCourseBatch]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(StudentCourseBatch $studentCourseBatch)
     {
-        //
+        $students = Student::all();
+        $courses = Course::all();
+        $batches = Batch::all();
+
+        return Inertia::render('StudentCourseBatch/Edit', [
+            'studentCourseBatch' => $studentCourseBatch,
+            'students' => $students,
+            'courses' => $courses,
+            'batches' => $batches,
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateStudentCourseBatchRequest $request, StudentCourseBatch $studentCourseBatch)
     {
-        //
+        $studentCourseBatch->update($request->validated());
+        return redirect()->route('student-course-batches.index')->with('success', 'Student Course Batch updated successfully!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(StudentCourseBatch $studentCourseBatch)
     {
-        //
+        $studentCourseBatch->delete();
+        return redirect()->route('student-course-batches.index')->with('success', 'Student Course Batch deleted successfully!');
     }
 }

@@ -29,7 +29,6 @@ class StoreStudentRequest extends FormRequest
             'gender' => 'required|string',
             'city' => 'nullable|string|max:255',
             'telegram_username' => 'nullable|string|max:255',
-            'facebook_username' => 'nullable|string|max:255',
         ];
     }
 }

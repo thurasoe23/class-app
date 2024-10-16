@@ -6,6 +6,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\StudentCourseBatchController;
 use App\Models\Assignment;
 use App\Models\Payment;
 use App\Models\Student;
@@ -38,8 +39,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('students', StudentController::class);
     Route::resource('courses', CourseController::class);
     Route::resource('batches', BatchController::class);
+    Route::resource('student-course-batches', StudentCourseBatchController::class);
     Route::resource('assignments', AssignmentController::class);
     Route::resource('payments', PaymentController::class);
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
