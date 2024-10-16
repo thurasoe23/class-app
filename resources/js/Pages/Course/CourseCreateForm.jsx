@@ -55,7 +55,7 @@ export default function CourseCreateForm() {
                         labelId="demo-simple-select-label"
                         id="course_level"
                         value={data.course_level}
-                        label="Gender"
+                        label="Course Level"
                         onChange={(e) => setData("course_level", e.target.value)}
                     >
                         <MenuItem value="Beginner">Beginner</MenuItem>

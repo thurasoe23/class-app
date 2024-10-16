@@ -89,7 +89,7 @@ export default function BatchTable() {
                                     {batch.id}
                                 </TableCell>
                                 <TableCell component="th" scope="row">
-                                {`${batch.course.name} (${batch.course.course_level})`}
+                                {batch?.course ? `${batch.course.name} (${batch.course.course_level})` : 'No Course Data'}
                                 </TableCell>
                                 <TableCell align="right">
                                     {batch.batch_identifier}

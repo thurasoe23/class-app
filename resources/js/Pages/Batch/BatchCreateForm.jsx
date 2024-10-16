@@ -11,6 +11,10 @@ import {
     FormControl,
     InputLabel,
 } from "@mui/material";
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs from 'dayjs';
 
 export default function BatchCreateForm() {
     const { props } = usePage();
@@ -18,7 +22,7 @@ export default function BatchCreateForm() {
         course_id: "",
         batch_identifier: "",
         start_date: "",
-        end_date: ""
+        end_date: "",
     });
 
     const handleSubmit = (e) => {
@@ -52,21 +56,23 @@ export default function BatchCreateForm() {
                     >
                         {props.courses.map((course) => (
                             <MenuItem key={course.id} value={course.id}>
-                             {`${course.name} (${course.course_level})`}
+                                {`${course.name} (${course.course_level})`}
                             </MenuItem>
                         ))}
                     </Select>
                 </FormControl>
-                
+
                 <TextField
                     id="batch_identifier"
                     label="Batch Identifier"
                     variant="outlined"
                     value={data.batch_identifier}
-                    onChange={(e) => setData("batch_identifier", e.target.value)}
+                    onChange={(e) =>
+                        setData("batch_identifier", e.target.value)
+                    }
                     required
                 />
-                <TextField
+                {/* <TextField
                     id="start_date"
                     label="Start Date"
                     variant="outlined"
@@ -77,7 +83,52 @@ export default function BatchCreateForm() {
                     InputLabelProps={{
                         shrink: true,
                     }}
-                />
+                /> */}
+
+                <FormControl>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DatePicker
+                            label="Start Date"
+                            value={
+                                data.start_date
+                                    ? dayjs(data.start_date)
+                                    : null
+                            }
+                            onChange={(newValue) => {
+                                const formattedDate = newValue
+                                    ? newValue.format("YYYY-MM-DD HH:mm:ss")
+                                    : "";
+                                setData("start_date", formattedDate);
+                            }}
+                            renderInput={(params) => (
+                                <TextField {...params} required fullWidth />
+                            )}
+                        />
+                    </LocalizationProvider>
+                </FormControl>
+
+                <FormControl>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DatePicker
+                            label="End Date"
+                            value={
+                                data.end_date
+                                    ? dayjs(data.end_date)
+                                    : null
+                            }
+                            onChange={(newValue) => {
+                                const formattedDate = newValue
+                                    ? newValue.format("YYYY-MM-DD HH:mm:ss")
+                                    : "";
+                                setData("end_date", formattedDate);
+                            }}
+                            renderInput={(params) => (
+                                <TextField {...params} required fullWidth />
+                            )}
+                        />
+                    </LocalizationProvider>
+                </FormControl>
+{/* 
                 <TextField
                     id="end_date"
                     label="End Date"
@@ -89,7 +140,7 @@ export default function BatchCreateForm() {
                     InputLabelProps={{
                         shrink: true,
                     }}
-                />
+                /> */}
 
                 <div>
                     <Button

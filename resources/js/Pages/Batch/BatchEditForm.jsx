@@ -11,6 +11,10 @@ import {
     FormControl,
     InputLabel,
 } from "@mui/material";
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs from 'dayjs';
 
 export default function BatchCreateForm() {
     const { batch, course } = usePage().props; // Access the passed batch and courses data
@@ -19,12 +23,12 @@ export default function BatchCreateForm() {
         course_id: batch.course_id || "",
         batch_identifier: batch.batch_identifier || "",
         start_date: batch.start_date || "",
-        end_date: batch.end_date || ""
+        end_date: batch.end_date || "",
     });
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        put(route("batches.update", batch.id ));
+        put(route("batches.update", batch.id));
     };
 
     return (
@@ -64,33 +68,49 @@ export default function BatchCreateForm() {
                     label="Batch Identifier"
                     variant="outlined"
                     value={data.batch_identifier}
-                    onChange={(e) => setData("batch_identifier", e.target.value)}
+                    onChange={(e) =>
+                        setData("batch_identifier", e.target.value)
+                    }
                     required
                 />
-                <TextField
-                    id="start_date"
-                    label="Start Date"
-                    variant="outlined"
-                    type="date"
-                    value={data.start_date}
-                    onChange={(e) => setData("start_date", e.target.value)}
-                    required
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                />
-                <TextField
-                    id="end_date"
-                    label="End Date"
-                    variant="outlined"
-                    type="date"
-                    value={data.end_date}
-                    onChange={(e) => setData("end_date", e.target.value)}
-                    required
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                />
+
+                <FormControl>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DatePicker
+                            label="Start Date"
+                            value={
+                                data.start_date ? dayjs(data.start_date) : null
+                            }
+                            onChange={(newValue) => {
+                                const formattedDate = newValue
+                                    ? newValue.format("YYYY-MM-DD HH:mm:ss")
+                                    : "";
+                                setData("start_date", formattedDate);
+                            }}
+                            renderInput={(params) => (
+                                <TextField {...params} required fullWidth />
+                            )}
+                        />
+                    </LocalizationProvider>
+                </FormControl>
+
+                <FormControl>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DatePicker
+                            label="End Date"
+                            value={data.end_date ? dayjs(data.end_date) : null}
+                            onChange={(newValue) => {
+                                const formattedDate = newValue
+                                    ? newValue.format("YYYY-MM-DD HH:mm:ss")
+                                    : "";
+                                setData("end_date", formattedDate);
+                            }}
+                            renderInput={(params) => (
+                                <TextField {...params} required fullWidth />
+                            )}
+                        />
+                    </LocalizationProvider>
+                </FormControl>
 
                 <div>
                     <Button
