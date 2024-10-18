@@ -4,10 +4,10 @@ use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\BatchController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\EnrollStudentController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StudentController;
-use App\Http\Controllers\StudentCourseBatchController;
 use App\Models\Assignment;
 use App\Models\Payment;
 use App\Models\Student;
@@ -40,7 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('students', StudentController::class);
     Route::resource('courses', CourseController::class);
     Route::resource('batches', BatchController::class);
-    Route::resource('student-course-batches', StudentCourseBatchController::class);
+    Route::resource('enroll-students', EnrollStudentController::class);
 
     Route::resource('assignments', AssignmentController::class);
     Route::post('/assignments/bulk-assign', [AssignmentController::class, 'bulkAssign'])->name('assignments.bulkAssign');

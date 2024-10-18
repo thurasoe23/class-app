@@ -3,9 +3,9 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\StudentCourseBatch;
+use App\Models\EnrollStudent;
 
-class StudentCourseBatchSeeder extends Seeder
+class EnrollStudentSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,7 +13,7 @@ class StudentCourseBatchSeeder extends Seeder
     public function run()
     {
         foreach (range(1, 50) as $index) {
-            StudentCourseBatch::create([
+            EnrollStudent::create([
                 'student_id' => rand(1, 50), // Randomly assign student IDs
                 'course_id' => rand(1, 5),   // Randomly assign course IDs
                 'batch_id' => rand(1, 10),    // Randomly assign batch IDs

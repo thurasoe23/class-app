@@ -45,8 +45,7 @@ export default function AssignmentCreateForm() {
         post(route("assignments.bulkAssign"));
     };
 
-    // Filter studentCourseBatches based on selected course and batch
-    const filteredStudentCourseBatches = props.studentCourseBatches.filter(
+    const filteredEnrollStudents = props.enrollStudents.filter(
         (courseBatch) =>
             courseBatch.course_id === data.course_id &&
             courseBatch.batch_id === data.batch_id
@@ -122,8 +121,8 @@ export default function AssignmentCreateForm() {
                     <Typography variant="body1" fontWeight="bold">
                         Select Students in the Selected Course and Batch:
                     </Typography>
-                    {filteredStudentCourseBatches.length > 0 ? (
-                        filteredStudentCourseBatches.map((courseBatch) => (
+                    {filteredEnrollStudents.length > 0 ? (
+                        filteredEnrollStudents.map((courseBatch) => (
                             <FormControlLabel
                                 key={courseBatch.id}
                                 control={

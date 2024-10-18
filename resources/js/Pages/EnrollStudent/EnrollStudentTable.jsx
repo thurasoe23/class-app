@@ -18,8 +18,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { formattedDate } from "@/utilities/dateUtils";
 
-export default function StudentCourseBatchTable() {
-    const { studentCourseBatches } = usePage().props;
+export default function EnrollStudentTable() {
+    const { enrollStudents } = usePage().props;
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [selectedBatch, setSelectedBatch] = React.useState(null);
@@ -35,13 +35,13 @@ export default function StudentCourseBatchTable() {
     };
 
     const handleEdit = () => {
-        Inertia.get(route("student-course-batches.edit", selectedBatch.id)); 
+        Inertia.get(route("enroll-students.edit", selectedBatch.id)); 
         handleMenuClose();
     };
 
     const handleDelete = () => {
         if (confirm("Are you sure you want to delete this student course batch?")) {
-            Inertia.delete(route("student-course-batches.destroy", selectedBatch.id));
+            Inertia.delete(route("enroll-students.destroy", selectedBatch.id));
         }
         handleMenuClose();
     };
@@ -55,7 +55,7 @@ export default function StudentCourseBatchTable() {
                     </h2>
                     <Button
                         variant="contained"
-                        onClick={() => Inertia.get(route("student-course-batches.create"))}
+                        onClick={() => Inertia.get(route("enroll-students.create"))}
                     >
                         Enroll Student
                     </Button>
@@ -77,7 +77,7 @@ export default function StudentCourseBatchTable() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {studentCourseBatches.map((batch) => (
+                        {enrollStudents.map((batch) => (
                             <TableRow
                                 key={batch.id}
                                 sx={{

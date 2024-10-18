@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('attendances', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('student_course_batch_id');
+            $table->unsignedBigInteger('enroll_student_id');
             $table->date('date');
             $table->string('status', 20);
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('student_course_batch_id')->references('id')->on('student_course_batches')->onDelete('cascade');
+            $table->foreign('enroll_student_id')->references('id')->on('enroll_students')->onDelete('cascade');
         });
     }
 

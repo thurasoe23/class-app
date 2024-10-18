@@ -6,7 +6,7 @@ use App\Http\Requests\StoreAttendanceRequest; // Create this request
 use App\Models\Attendance;
 use App\Models\Batch;
 use App\Models\Course;
-use App\Models\StudentCourseBatch;
+use App\Models\EnrollStudent;
 use Inertia\Inertia;
 
 class AttendanceController extends Controller
@@ -18,7 +18,7 @@ class AttendanceController extends Controller
      */
     public function index()
     {
-        $attendances = Attendance::with(['studentCourseBatch.student', 'studentCourseBatch.batch', 'studentCourseBatch.course'])->get();
+        $attendances = Attendance::with(['enrollStudent.student', 'enrollStudent.batch', 'enrollStudent.course'])->get();
 
         return Inertia::render('Attendance/AttendanceTable', [
             'attendances' => $attendances,
@@ -35,7 +35,7 @@ class AttendanceController extends Controller
         return Inertia::render('Attendance/AttendanceCreateForm', [
             'courses' => Course::all(),  // Fetch all courses for selection
             'batches' => Batch::all(),   // Fetch all batches for selection
-            'studentCourseBatches' => StudentCourseBatch::with(['student', 'batch', 'course'])->get(),
+            'enrollStudents' => EnrollStudent::with(['student', 'batch', 'course'])->get(),
         ]);
     }
 
@@ -63,14 +63,14 @@ class AttendanceController extends Controller
         $validated = $request->validated(); // Get the validated data
 
         foreach ($validated['selected_students'] as $studentId) {
-            $studentCourseBatch = StudentCourseBatch::where('student_id', $studentId)
+            $enrollStudent = EnrollStudent::where('student_id', $studentId)
                 ->where('course_id', $validated['course_id'])
                 ->where('batch_id', $validated['batch_id'])
                 ->first();
 
-            if ($studentCourseBatch) {
+            if ($enrollStudent) {
                 Attendance::create([
-                    'student_course_batch_id' => $studentCourseBatch->id,
+                    'enroll_student_id' => $enrollStudent->id,
                     'date' => $validated['date'], // Assuming you pass date in request
                     'status' => $validated['status'],
                 ]);

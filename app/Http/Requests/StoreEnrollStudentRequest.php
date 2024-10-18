@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class UpdateStudentCourseBatchRequest extends FormRequest
+class StoreEnrollStudentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,11 +23,11 @@ class UpdateStudentCourseBatchRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'student_id' => 'sometimes|exists:students,id',
-            'course_id' => 'sometimes|exists:courses,id',
-            'batch_id' => 'sometimes|exists:batches,id',
-            'enrollment_date' => 'sometimes|date',
-            'status' => 'sometimes|string',
+            'student_id' => 'required|exists:students,id',
+            'course_id' => 'required|exists:courses,id',
+            'batch_id' => 'required|exists:batches,id',
+            'enrollment_date' => 'required|date',
+            'status' => 'required|string',
         ];
     }
 }

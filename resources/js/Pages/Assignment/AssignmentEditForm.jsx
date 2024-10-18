@@ -16,7 +16,7 @@ import {
 export default function AssignmentEditForm() {
     const { props } = usePage();
     const { data, setData, put, errors, processing } = useForm({
-        student_course_batch_id: props.assignment.student_course_batch.id, // Initialize with the current assignment's student course batch
+        enroll_student_id: props.assignment.enroll_student.id, // Initialize with the current assignment's student course batch
         task: props.assignment.task || "",
         status: props.assignment.status || "Pending", // Default to "Pending"
     });
@@ -26,7 +26,7 @@ export default function AssignmentEditForm() {
         put(route("assignments.update", props.assignment.id)); // Use PUT method for updating
     };
     
-    const selectedCourseBatch = props.assignment.student_course_batch;
+    const selectedCourseBatch = props.assignment.enroll_student;
 
     return (
         <AuthenticatedLayout
@@ -45,17 +45,17 @@ export default function AssignmentEditForm() {
             >
                 {/* Dropdown for selecting Student Course Batch */}
                 <FormControl fullWidth required>
-                    <InputLabel id="student_course_batch_id">
+                    <InputLabel id="enroll_student_id">
                         Select Student Course Batch
                     </InputLabel>
                     <Select
-                        labelId="student_course_batch_id"
-                        id="student_course_batch_id"
-                        value={data.student_course_batch_id}
+                        labelId="enroll_student_id"
+                        id="enroll_student_id"
+                        value={data.enroll_student_id}
                         label="Select Student Course Batch"
-                        onChange={(e) => setData("student_course_batch_id", e.target.value)}
+                        onChange={(e) => setData("enroll_student_id", e.target.value)}
                     >
-                        {props.studentCourseBatches.map((courseBatch) => (
+                        {props.enrollStudents.map((courseBatch) => (
                             <MenuItem key={courseBatch.id} value={courseBatch.id}>
                                 {`${courseBatch.student.name} - ${courseBatch.batch.batch_identifier} - ${courseBatch.course.name}`}
                             </MenuItem>

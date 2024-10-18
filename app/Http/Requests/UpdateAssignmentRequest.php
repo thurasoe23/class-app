@@ -23,7 +23,7 @@ class UpdateAssignmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'student_course_batch_id' => 'nullable|exists:student_course_batches,id', // Update this line
+            'enroll_student_id' => 'nullable|exists:enroll_students,id', // Update this line
             'task' => 'nullable|string|max:255', // Allow task to be optional for updates
             'status' => 'nullable|string|in:Pending,Done,Failed', // Allow status to be optional for updates
         ];

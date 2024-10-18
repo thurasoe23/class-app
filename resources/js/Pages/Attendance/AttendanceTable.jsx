@@ -84,13 +84,13 @@ export default function AttendanceTable() {
                             >
                                 <TableCell align="left">{attendance.id}</TableCell>
                                 <TableCell component="th" scope="row">
-                                    {attendance?.student_course_batch?.student?.name}
+                                    {attendance?.enroll_student?.student?.name}
                                 </TableCell>
                                 <TableCell align="right">
-                                    {attendance?.student_course_batch?.batch?.batch_identifier}
+                                    {attendance?.enroll_student?.batch?.batch_identifier}
                                 </TableCell>
                                 <TableCell align="right">
-                                    {attendance?.student_course_batch?.course?.name}
+                                    {attendance?.enroll_student?.course?.name}
                                 </TableCell>
                                 <TableCell align="right">
                                     {new Date(attendance.date).toLocaleDateString()}

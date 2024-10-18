@@ -66,7 +66,7 @@ export default function Authenticated({ header, children }) {
                 <ListItem
                     button
                     component="a"
-                    href={route("student-course-batches.index")}
+                    href={route("enroll-students.index")}
                 >
                     <MenuBookIcon sx={{ marginRight: 2, color: "gray" }} />
                     <ListItemText primary="Enroll Student" />

@@ -14,7 +14,7 @@ class AssignmentSeeder extends Seeder
     {
         foreach (range(1, 50) as $index) {
             Assignment::create([
-                'student_course_batch_id' => rand(1, 50), // Randomly assign student_course_batch IDs
+                'enroll_student_id' => rand(1, 50), // Randomly assign student_course_batch IDs
                 'task' => 'Complete Assignment ' . $index,
                 'status' => 'Pending',
             ]);

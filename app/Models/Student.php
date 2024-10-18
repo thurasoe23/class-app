@@ -25,17 +25,17 @@ class Student extends Model
 
     public function payments()
     {
-        return $this->hasManyThrough(Payment::class, StudentCourseBatch::class);
+        return $this->hasManyThrough(Payment::class, EnrollStudent::class);
     }
 
-    public function studentCourseBatches()
+    public function enrollStudents()
     {
-        return $this->hasMany(StudentCourseBatch::class);
+        return $this->hasMany(EnrollStudent::class);
     }
 
     public function assignments()
     {
-        return $this->hasManyThrough(Assignment::class, StudentCourseBatch::class);
+        return $this->hasManyThrough(Assignment::class, EnrollStudent::class);
     }
 
     // public function courseHistory()

@@ -45,11 +45,10 @@ export default function AttendanceCreateForm() {
         post(route("attendances.bulkAssign"));
     };
 
-    // Filter studentCourseBatches based on selected course and batch
-    const filteredStudentCourseBatches = props.studentCourseBatches.filter(
-        (courseBatch) =>
-            courseBatch.course_id === data.course_id &&
-            courseBatch.batch_id === data.batch_id
+    const filteredEnrollStudents = props.enrollStudents.filter(
+        (enrollStudent) =>
+            enrollStudent.course_id === data.course_id &&
+            enrollStudent.batch_id === data.batch_id
     );
 
     // Handle checkbox change
@@ -122,17 +121,17 @@ export default function AttendanceCreateForm() {
                     <Typography variant="body1" fontWeight="bold">
                         Select Students in the Selected Course and Batch:
                     </Typography>
-                    {filteredStudentCourseBatches.length > 0 ? (
-                        filteredStudentCourseBatches.map((courseBatch) => (
+                    {filteredEnrollStudents.length > 0 ? (
+                        filteredEnrollStudents.map((enrollStudent) => (
                             <FormControlLabel
-                                key={courseBatch.id}
+                                key={enrollStudent.id}
                                 control={
                                     <Checkbox
-                                        checked={data.selected_students.includes(courseBatch.student.id)}
-                                        onChange={() => handleCheckboxChange(courseBatch.student.id)}
+                                        checked={data.selected_students.includes(enrollStudent.student.id)}
+                                        onChange={() => handleCheckboxChange(enrollStudent.student.id)}
                                     />
                                 }
-                                label={courseBatch.student.name}
+                                label={enrollStudent.student.name}
                             />
                         ))
                     ) : (

@@ -16,6 +16,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function AssignmentTable() {
     const { assignments } = usePage().props;
+    console.log(assignments)
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [selectedAssignment, setSelectedAssignment] = React.useState(null);
@@ -85,16 +86,16 @@ export default function AssignmentTable() {
                             >
                                 <TableCell align="left">{assignment.id}</TableCell>
                                 <TableCell component="th" scope="row">
-                                    {assignment?.student_course_batch?.student?.name}
+                                    {assignment?.enroll_student?.student?.name}
                                 </TableCell>
                                 <TableCell align="right">
-                                    {assignment?.student_course_batch?.batch?.batch_identifier}
+                                    {assignment?.enroll_student?.batch?.batch_identifier}
                                 </TableCell>
                                 <TableCell align="right">
-                                    {assignment?.student_course_batch?.course?.name}
+                                    {assignment?.enroll_student?.course?.name}
                                 </TableCell>
                                 <TableCell align="right">
-                                    {assignment?.student_course_batch?.course?.course_level}
+                                    {assignment?.enroll_student?.course?.course_level}
                                 </TableCell>
                                 <TableCell align="right">
                                     {assignment.task}

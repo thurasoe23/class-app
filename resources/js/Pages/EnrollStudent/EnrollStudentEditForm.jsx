@@ -4,39 +4,36 @@ import { Head, useForm } from "@inertiajs/react";
 import {
     Button,
     Box,
+    TextField,
     Select,
     MenuItem,
-    TextField,
     FormControl,
     InputLabel,
 } from "@mui/material";
+import { formattedDate } from "@/utilities/dateUtils";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 
-export default function StudentCourseBatchCreateForm({
-    students,
-    courses,
-    batches,
-}) {
-    const { data, setData, post, errors, processing } = useForm({
-        student_id: "",
-        course_id: "",
-        batch_id: "",
-        enrollment_date: null, // Set initial value to null
-        status: "",
+export default function EnrollStudentEditForm({ students, courses, batches, enroll_student }) {
+    const { data, setData, put, errors, processing } = useForm({
+        student_id: enroll_student.student_id || "",
+        course_id: enroll_student.course_id || "",
+        batch_id: enroll_student.batch_id || "",
+        enrollment_date: formattedDate(enroll_student.enrollment_date) || "",
+        status: enroll_student.status || "",
     });
+
+    console.log(enroll_student)
 
     const [filteredBatches, setFilteredBatches] = React.useState(batches);
 
     React.useEffect(() => {
         if (data.course_id) {
-            const filtered = batches.filter(
-                (batch) => batch.course_id === data.course_id
-            );
+            const filtered = batches.filter(batch => batch.course_id === data.course_id);
             setFilteredBatches(filtered);
-            setData("batch_id", "");
+            setData("batch_id", ""); // Clear batch selection if course changes
         } else {
             setFilteredBatches(batches);
         }
@@ -44,19 +41,18 @@ export default function StudentCourseBatchCreateForm({
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Ensure enrollment_date is formatted correctly
-        post(route("student-course-batches.store"));
+        put(route("enroll-students.update", enroll_student.id)); // Update route with batch ID
     };
 
     return (
         <AuthenticatedLayout
             header={
                 <h2 className="text-xl font-semibold leading-tight text-black">
-                    Add New Student Course Batch
+                    Edit Student Course Batch
                 </h2>
             }
         >
-            <Head title="Add New Student Course Batch" />
+            <Head title="Edit Student Course Batch" />
             <Box
                 onSubmit={handleSubmit}
                 sx={{ "& > :not(style)": { m: 1, width: "25ch" } }}
@@ -71,10 +67,8 @@ export default function StudentCourseBatchCreateForm({
                         label="Student"
                         onChange={(e) => setData("student_id", e.target.value)}
                     >
-                        {students.map((student) => (
-                            <MenuItem key={student.id} value={student.id}>
-                                {student.name}
-                            </MenuItem>
+                        {students.map(student => (
+                            <MenuItem key={student.id} value={student.id}>{student.name}</MenuItem>
                         ))}
                     </Select>
                 </FormControl>
@@ -83,15 +77,12 @@ export default function StudentCourseBatchCreateForm({
                     <InputLabel id="course-select-label">Course</InputLabel>
                     <Select
                         labelId="course-select-label"
-                        value={data.course_id}
                         label="Course"
+                        value={data.course_id}
                         onChange={(e) => setData("course_id", e.target.value)}
                     >
-                        {courses.map((course) => (
-                            <MenuItem
-                                key={course.id}
-                                value={course.id}
-                            >{`${course.name} (${course.course_level})`}</MenuItem>
+                        {courses.map(course => (
+                            <MenuItem key={course.id} value={course.id}>{`${course.name} (${course.course_level})`}</MenuItem>
                         ))}
                     </Select>
                 </FormControl>
@@ -100,15 +91,13 @@ export default function StudentCourseBatchCreateForm({
                     <InputLabel id="batch-select-label">Batch</InputLabel>
                     <Select
                         labelId="batch-select-label"
-                        value={data.batch_id}
                         label="Batch"
+                        value={data.batch_id}
                         onChange={(e) => setData("batch_id", e.target.value)}
                     >
                         {filteredBatches.length > 0 ? (
-                            filteredBatches.map((batch) => (
-                                <MenuItem key={batch.id} value={batch.id}>
-                                    {batch.batch_identifier}
-                                </MenuItem>
+                            filteredBatches.map(batch => (
+                                <MenuItem key={batch.id} value={batch.id}>{batch.batch_identifier}</MenuItem>
                             ))
                         ) : (
                             <MenuItem disabled>No Batches Available</MenuItem>
@@ -152,7 +141,7 @@ export default function StudentCourseBatchCreateForm({
                         disabled={processing}
                         sx={{ padding: "8px 16px" }}
                     >
-                        {processing ? "Submitting..." : "Submit"}
+                        {processing ? "Submitting..." : "Update"}
                     </Button>
                 </div>
             </Box>
