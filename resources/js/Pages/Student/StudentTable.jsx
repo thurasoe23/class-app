@@ -14,11 +14,19 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import TablePagination from "@mui/material/TablePagination";
+import TablePaginationActions from "@/Components/TablePagination";
 
 export default function StudentTable() {
     const { students } = usePage().props;
+    const [page, setPage] = React.useState(0);
+    const rowsPerPage = 10;
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [selectedStudent, setSelectedStudent] = React.useState(null);
@@ -34,7 +42,7 @@ export default function StudentTable() {
     };
 
     const handleEdit = () => {
-        Inertia.get(route("students.edit", selectedStudent.id)); 
+        Inertia.get(route("students.edit", selectedStudent.id));
         handleMenuClose();
     };
 
@@ -62,70 +70,98 @@ export default function StudentTable() {
             }
         >
             <Head title="Students" />
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="students table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>ID</TableCell>
-                            <TableCell>Student Name</TableCell>
-                            <TableCell align="right">Phone Number</TableCell>
-                            <TableCell align="right">Email</TableCell>
-                            <TableCell align="right">Gender</TableCell>
-                            <TableCell align="right">City</TableCell>
-                            <TableCell align="right">
-                                Telegram Username
-                            </TableCell>
-                            <TableCell align="right">Actions</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {students.map((student) => (
-                            <TableRow
-                                key={student.id}
-                                sx={{
-                                    "&:last-child td, &:last-child th": {
-                                        border: 0,
-                                    },
-                                }}
-                            >
-                                <TableCell component="th" scope="row">
-                                    {student.id}
-                                </TableCell>
-                                <TableCell component="th" scope="row">
-                                    {student.name}
-                                </TableCell>
+            <Paper sx={{ width: "100%" }}>
+                <TableContainer sx={{ maxHeight: "70vh", overflowY: "auto" }}>
+                    <Table
+                        sx={{ minWidth: 650 }}
+                        aria-label="students table"
+                        stickyHeader
+                    >
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>ID</TableCell>
+                                <TableCell>Student Name</TableCell>
                                 <TableCell align="right">
-                                    {student.phone_number}
+                                    Phone Number
                                 </TableCell>
+                                <TableCell align="right">Email</TableCell>
+                                <TableCell align="right">Gender</TableCell>
+                                <TableCell align="right">City</TableCell>
                                 <TableCell align="right">
-                                    {student.email}
+                                    Telegram Username
                                 </TableCell>
-                                <TableCell align="right">
-                                    {student.gender}
-                                </TableCell>
-                                <TableCell align="right">
-                                    {student.city}
-                                </TableCell>
-                                <TableCell align="right">
-                                    {student.telegram_username}
-                                </TableCell>
-                                <TableCell align="right" sx={{padding: 0}}>
-                                    <IconButton
-                                        aria-label="more"
-                                        aria-controls="long-menu"
-                                        aria-haspopup="true"
-                                        onClick={(event) =>
-                                            handleMenuOpen(event, student)
-                                        }
-                                    >
-                                        <MoreVertIcon />
-                                    </IconButton>
-                                </TableCell>
+                                <TableCell align="right">Actions</TableCell>
                             </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+                        </TableHead>
+                        <TableBody>
+                            {students
+                                .slice(
+                                    page * rowsPerPage,
+                                    page * rowsPerPage + rowsPerPage
+                                )
+                                .map((student) => (
+                                    <TableRow
+                                        key={student.id}
+                                        sx={{
+                                            "&:last-child td, &:last-child th":
+                                                {
+                                                    border: 0,
+                                                },
+                                        }}
+                                    >
+                                        <TableCell component="th" scope="row">
+                                            {student.id}
+                                        </TableCell>
+                                        <TableCell>{student.name}</TableCell>
+                                        <TableCell align="right">
+                                            {student.phone_number}
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            {student.email}
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            {student.gender}
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            {student.city}
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            {student.telegram_username}
+                                        </TableCell>
+                                        <TableCell
+                                            align="right"
+                                            sx={{ padding: 0 }}
+                                        >
+                                            <IconButton
+                                                aria-label="more"
+                                                aria-controls="long-menu"
+                                                aria-haspopup="true"
+                                                onClick={(event) =>
+                                                    handleMenuOpen(
+                                                        event,
+                                                        student
+                                                    )
+                                                }
+                                            >
+                                                <MoreVertIcon />
+                                            </IconButton>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                <TablePagination
+                    count={students.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    ActionsComponent={TablePaginationActions}
+                    rowsPerPageOptions={[]}
+                    labelRowsPerPage={""}
+                    component="div"
+                />
+            </Paper>
 
             <Menu
                 id="long-menu"
@@ -139,8 +175,14 @@ export default function StudentTable() {
                     },
                 }}
             >
-                <MenuItem onClick={handleEdit}><EditIcon sx={{marginRight: 1}} />Edit</MenuItem>
-                <MenuItem onClick={handleDelete}><DeleteIcon sx={{marginRight: 1}} />Delete</MenuItem>
+                <MenuItem onClick={handleEdit}>
+                    <EditIcon sx={{ marginRight: 1 }} />
+                    Edit
+                </MenuItem>
+                <MenuItem onClick={handleDelete}>
+                    <DeleteIcon sx={{ marginRight: 1 }} />
+                    Delete
+                </MenuItem>
             </Menu>
         </AuthenticatedLayout>
     );

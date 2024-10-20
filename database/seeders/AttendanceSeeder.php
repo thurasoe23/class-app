@@ -12,9 +12,9 @@ class AttendanceSeeder extends Seeder
      */
     public function run()
     {
-        foreach (range(1, 50) as $index) {
+        foreach (range(1, 20) as $index) {
             Attendance::create([
-                'enroll_student_id' => rand(1, 50), // Randomly assign student_course_batch IDs
+                'enroll_student_id' => rand(1, 20), // Randomly assign student_course_batch IDs
                 'date' => now()->subDays(rand(1, 30)), // Random date within the last 30 days
                 'status' => rand(0, 1) ? 'Present' : 'Absent', // Randomly assign present or absent
             ]);

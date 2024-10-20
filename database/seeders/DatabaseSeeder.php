@@ -19,13 +19,13 @@ class DatabaseSeeder extends Seeder
             'email' => 'thura@gmail.com',
         ]);
 
-        // $this->call([
-        //     StudentSeeder::class,
-        //     CourseSeeder::class,
-        //     BatchSeeder::class,
-        //     EnrollStudentSeeder::class,
-        //     AssignmentSeeder::class,
-        //     AttendanceSeeder::class,
-        // ]);
+        $this->call([
+            StudentSeeder::class,
+            CourseSeeder::class,
+            BatchSeeder::class,
+            EnrollStudentSeeder::class,
+            AssignmentSeeder::class,
+            AttendanceSeeder::class,
+        ]);
     }
 }

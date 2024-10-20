@@ -15,7 +15,7 @@ class StudentSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        foreach (range(1, 50) as $index) {
+        foreach (range(1, 20) as $index) {
             Student::create([
                 'name' => $faker->name,
                 'email' => $faker->unique()->safeEmail,

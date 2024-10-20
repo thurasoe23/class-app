@@ -51,12 +51,15 @@ export default function AssignmentCreateForm() {
             courseBatch.batch_id === data.batch_id
     );
 
+    console.log(filteredEnrollStudents)
+
     // Handle checkbox change
     const handleCheckboxChange = (studentId) => {
         setData((prevData) => {
             const selectedStudents = prevData.selected_students.includes(studentId)
                 ? prevData.selected_students.filter((id) => id !== studentId) // Uncheck
                 : [...prevData.selected_students, studentId]; // Check
+                console.log(selectedStudents)
             return { ...prevData, selected_students: selectedStudents };
         });
     };

@@ -12,11 +12,11 @@ class EnrollStudentSeeder extends Seeder
      */
     public function run()
     {
-        foreach (range(1, 50) as $index) {
+        foreach (range(1, 20) as $studentId) {  // Loop through each student ID from 1 to 20
             EnrollStudent::create([
-                'student_id' => rand(1, 50), // Randomly assign student IDs
-                'course_id' => rand(1, 5),   // Randomly assign course IDs
-                'batch_id' => rand(1, 10),    // Randomly assign batch IDs
+                'student_id' => $studentId,      // Assign the current student ID
+                'course_id' => 1,                // You can also randomize this if needed
+                'batch_id' => 1,                 // You can also randomize this if needed
                 'enrollment_date' => now(),
                 'status' => 'Enrolled',
             ]);
