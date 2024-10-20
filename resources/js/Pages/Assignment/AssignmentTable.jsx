@@ -13,10 +13,17 @@ import { Inertia } from "@inertiajs/inertia";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import TablePagination from "@mui/material/TablePagination";
+import TablePaginationActions from "@/Components/TablePagination";
 
 export default function AssignmentTable() {
     const { assignments } = usePage().props;
-    console.log(assignments)
+    const [page, setPage] = React.useState(0);
+    const rowsPerPage = 10;
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [selectedAssignment, setSelectedAssignment] = React.useState(null);
@@ -60,8 +67,9 @@ export default function AssignmentTable() {
             }
         >
             <Head title="Assignments" />
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="assignments table">
+            <Paper sx={{ width: "100%" }}>
+                <TableContainer sx={{ maxHeight: "70vh", overflowY: "auto" }}>
+                <Table sx={{ minWidth: 650 }} aria-label="assignments table" stickyHeader>
                     <TableHead>
                         <TableRow>
                             <TableCell>ID</TableCell>
@@ -75,7 +83,12 @@ export default function AssignmentTable() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {assignments.map((assignment) => (
+                        {assignments
+                        .slice(
+                            page * rowsPerPage,
+                            page * rowsPerPage + rowsPerPage
+                        )
+                        .map((assignment) => (
                             <TableRow
                                 key={assignment.id}
                                 sx={{
@@ -116,6 +129,17 @@ export default function AssignmentTable() {
                     </TableBody>
                 </Table>
             </TableContainer>
+            <TablePagination
+                    count={assignments.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    ActionsComponent={TablePaginationActions}
+                    rowsPerPageOptions={[]}
+                    labelRowsPerPage={""}
+                    component="div"
+                />
+            </Paper>
 
             <Menu
                 anchorEl={anchorEl}

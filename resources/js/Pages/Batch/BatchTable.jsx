@@ -14,12 +14,19 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import TablePagination from "@mui/material/TablePagination";
+import TablePaginationActions from "@/Components/TablePagination";
 
 export default function BatchTable() {
-
     const { batches } = usePage().props;
+    const [page, setPage] = React.useState(0);
+    const rowsPerPage = 10;
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [selectedBatch, setSelectedBatch] = React.useState(null);
@@ -63,60 +70,87 @@ export default function BatchTable() {
             }
         >
             <Head title="Batches" />
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>ID</TableCell>
-                            <TableCell>Course Name</TableCell>
-                            <TableCell align="right">Batch</TableCell>
-                            <TableCell align="right">Start Date</TableCell>
-                            <TableCell align="right">End Date</TableCell>
-                            <TableCell align="right">Actions</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {batches.map((batch) => (
-                            <TableRow
-                                key={batch.id}
-                                sx={{
-                                    "&:last-child td, &:last-child th": {
-                                        border: 0,
-                                    },
-                                }}
-                            >
-                                <TableCell align="left">
-                                    {batch.id}
-                                </TableCell>
-                                <TableCell component="th" scope="row">
-                                {batch?.course ? `${batch.course.name} (${batch.course.course_level})` : 'No Course Data'}
-                                </TableCell>
-                                <TableCell align="right">
-                                    {batch.batch_identifier}
-                                </TableCell>
-                                <TableCell align="right">
-                                    {batch.start_date}
-                                </TableCell>
-                                <TableCell align="right">
-                                    {batch.end_date}
-                                </TableCell>
-                                <TableCell align="right" sx={{padding: 0}}>
-                                    <IconButton
-                                        aria-label="more"
-                                        aria-controls="long-menu"
-                                        aria-haspopup="true"
-                                        onClick={(event) =>
-                                            handleMenuOpen(event, batch)
-                                        }
-                                    >
-                                        <MoreVertIcon />
-                                    </IconButton>
-                                </TableCell>
+            <Paper sx={{ width: "100%" }}>
+                <TableContainer sx={{ maxHeight: "70vh", overflowY: "auto" }}>
+                    <Table
+                        sx={{ minWidth: 650 }}
+                        aria-label="simple table"
+                        stickyHeader
+                    >
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>ID</TableCell>
+                                <TableCell>Course Name</TableCell>
+                                <TableCell align="right">Batch</TableCell>
+                                <TableCell align="right">Start Date</TableCell>
+                                <TableCell align="right">End Date</TableCell>
+                                <TableCell align="right">Actions</TableCell>
                             </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+                        </TableHead>
+                        <TableBody>
+                            {batches
+                                .slice(
+                                    page * rowsPerPage,
+                                    page * rowsPerPage + rowsPerPage
+                                )
+                                .map((batch) => (
+                                    <TableRow
+                                        key={batch.id}
+                                        sx={{
+                                            "&:last-child td, &:last-child th":
+                                                {
+                                                    border: 0,
+                                                },
+                                        }}
+                                    >
+                                        <TableCell align="left">
+                                            {batch.id}
+                                        </TableCell>
+                                        <TableCell component="th" scope="row">
+                                            {batch?.course
+                                                ? `${batch.course.name} (${batch.course.course_level})`
+                                                : "No Course Data"}
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            {batch.batch_identifier}
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            {batch.start_date}
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            {batch.end_date}
+                                        </TableCell>
+                                        <TableCell
+                                            align="right"
+                                            sx={{ padding: 0 }}
+                                        >
+                                            <IconButton
+                                                aria-label="more"
+                                                aria-controls="long-menu"
+                                                aria-haspopup="true"
+                                                onClick={(event) =>
+                                                    handleMenuOpen(event, batch)
+                                                }
+                                            >
+                                                <MoreVertIcon />
+                                            </IconButton>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                <TablePagination
+                    count={batches.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    ActionsComponent={TablePaginationActions}
+                    rowsPerPageOptions={[]}
+                    labelRowsPerPage={""}
+                    component="div"
+                />
+            </Paper>
 
             <Menu
                 id="long-menu"
@@ -130,8 +164,14 @@ export default function BatchTable() {
                     },
                 }}
             >
-                <MenuItem onClick={handleEdit}><EditIcon sx={{marginRight: 1}} />Edit</MenuItem>
-                <MenuItem onClick={handleDelete}><DeleteIcon sx={{marginRight: 1}} />Delete</MenuItem>
+                <MenuItem onClick={handleEdit}>
+                    <EditIcon sx={{ marginRight: 1 }} />
+                    Edit
+                </MenuItem>
+                <MenuItem onClick={handleDelete}>
+                    <DeleteIcon sx={{ marginRight: 1 }} />
+                    Delete
+                </MenuItem>
             </Menu>
         </AuthenticatedLayout>
     );

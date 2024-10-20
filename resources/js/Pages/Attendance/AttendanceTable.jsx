@@ -13,9 +13,17 @@ import { Inertia } from "@inertiajs/inertia";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import TablePagination from "@mui/material/TablePagination";
+import TablePaginationActions from "@/Components/TablePagination";
 
 export default function AttendanceTable() {
     const { attendances } = usePage().props;
+    const [page, setPage] = React.useState(0);
+    const rowsPerPage = 10;
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [selectedAttendance, setSelectedAttendance] = React.useState(null);
@@ -59,8 +67,9 @@ export default function AttendanceTable() {
             }
         >
             <Head title="Attendance" />
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="attendance table">
+            <Paper sx={{ width: "100%" }}>
+                <TableContainer sx={{ maxHeight: "70vh", overflowY: "auto" }}>
+                <Table sx={{ minWidth: 650 }} aria-label="attendance table" stickyHeader>
                     <TableHead>
                         <TableRow>
                             <TableCell>ID</TableCell>
@@ -73,7 +82,12 @@ export default function AttendanceTable() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {attendances.map((attendance) => (
+                        {attendances
+                        .slice(
+                            page * rowsPerPage,
+                            page * rowsPerPage + rowsPerPage
+                        )
+                        .map((attendance) => (
                             <TableRow
                                 key={attendance.id}
                                 sx={{
@@ -111,6 +125,17 @@ export default function AttendanceTable() {
                     </TableBody>
                 </Table>
             </TableContainer>
+            <TablePagination
+                    count={attendances.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    ActionsComponent={TablePaginationActions}
+                    rowsPerPageOptions={[]}
+                    labelRowsPerPage={""}
+                    component="div"
+                />
+            </Paper>
 
             <Menu
                 anchorEl={anchorEl}
