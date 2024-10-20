@@ -23,7 +23,7 @@ class StoreEnrollStudentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'student_id' => 'required|exists:students,id',
+            'student_ids' => 'required|exists:students,id',
             'course_id' => 'required|exists:courses,id',
             'batch_id' => 'required|exists:batches,id',
             'enrollment_date' => 'required|date',

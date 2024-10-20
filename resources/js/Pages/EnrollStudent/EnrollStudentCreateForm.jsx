@@ -4,16 +4,23 @@ import { Head, useForm } from "@inertiajs/react";
 import {
     Button,
     Box,
-    Select,
-    MenuItem,
     TextField,
     FormControl,
     InputLabel,
+    Select,
+    MenuItem,
 } from "@mui/material";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
+import Checkbox from '@mui/material/Checkbox';
+import Autocomplete from '@mui/material/Autocomplete';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 export default function EnrollStudentCreateForm({
     students,
@@ -21,12 +28,14 @@ export default function EnrollStudentCreateForm({
     batches,
 }) {
     const { data, setData, post, errors, processing } = useForm({
-        student_id: "",
+        student_ids: [],  // changed to store multiple student IDs
         course_id: "",
         batch_id: "",
-        enrollment_date: null, // Set initial value to null
+        enrollment_date: null,
         status: "",
     });
+
+    console.log(data.student_ids)
 
     const [filteredBatches, setFilteredBatches] = React.useState(batches);
 
@@ -44,15 +53,22 @@ export default function EnrollStudentCreateForm({
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Ensure enrollment_date is formatted correctly
+        // Send the selected students and other form data to backend
+
         post(route("enroll-students.store"));
+    };
+
+    const handleStudentChange = (event, newValue) => {
+        // Only store the IDs of the selected students
+        const selectedIds = newValue.map(student => student.id);
+        setData("student_ids", selectedIds);
     };
 
     return (
         <AuthenticatedLayout
             header={
                 <h2 className="text-xl font-semibold leading-tight text-black">
-                    Add New Student Course Batch
+                    Add New Student Course Batch (Bulk Enroll)
                 </h2>
             }
         >
@@ -64,19 +80,28 @@ export default function EnrollStudentCreateForm({
                 autoComplete="off"
             >
                 <FormControl fullWidth required>
-                    <InputLabel id="student-select-label">Student</InputLabel>
-                    <Select
-                        labelId="student-select-label"
-                        value={data.student_id}
-                        label="Student"
-                        onChange={(e) => setData("student_id", e.target.value)}
-                    >
-                        {students.map((student) => (
-                            <MenuItem key={student.id} value={student.id}>
-                                {student.name}
-                            </MenuItem>
-                        ))}
-                    </Select>
+                <Autocomplete
+                        multiple
+                        id="student-select"
+                        options={students}
+                        value={students.filter(student => data.student_ids.includes(student.id))}  // Filter students to show selected ones
+                        onChange={handleStudentChange}  // Only the student IDs are stored
+                        getOptionLabel={(option) => option.name}  // Display student name
+                        renderOption={(props, option, { selected }) => (
+                            <li {...props}>
+                                <Checkbox
+                                    icon={icon}
+                                    checkedIcon={checkedIcon}
+                                    style={{ marginRight: 8 }}
+                                    checked={selected}
+                                />
+                                {option.name} {/* Display the student's name */}
+                            </li>
+                        )}
+                        renderInput={(params) => (
+                            <TextField {...params} label="Students" placeholder="Select students" />
+                        )}
+                    />
                 </FormControl>
 
                 <FormControl fullWidth required>
@@ -88,10 +113,9 @@ export default function EnrollStudentCreateForm({
                         onChange={(e) => setData("course_id", e.target.value)}
                     >
                         {courses.map((course) => (
-                            <MenuItem
-                                key={course.id}
-                                value={course.id}
-                            >{`${course.name} (${course.course_level})`}</MenuItem>
+                            <MenuItem key={course.id} value={course.id}>
+                                {`${course.name} (${course.course_level})`}
+                            </MenuItem>
                         ))}
                     </Select>
                 </FormControl>
@@ -117,23 +141,23 @@ export default function EnrollStudentCreateForm({
                 </FormControl>
 
                 <FormControl>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                        label="Enrollment Date"
-                        value={data.enrollment_date ? dayjs(data.enrollment_date) : null}
-                        onChange={(newValue) => {
-                            const formattedDate = newValue ? newValue.format('YYYY-MM-DD HH:mm:ss') : "";
-                            setData("enrollment_date", formattedDate);
-                        }}
-                        renderInput={(params) => (
-                            <TextField 
-                                {...params}
-                                required
-                                fullWidth
-                            />
-                        )}
-                    />
-                </LocalizationProvider>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DatePicker
+                            label="Enrollment Date"
+                            value={data.enrollment_date ? dayjs(data.enrollment_date) : null}
+                            onChange={(newValue) => {
+                                const formattedDate = newValue ? newValue.format('YYYY-MM-DD HH:mm:ss') : "";
+                                setData("enrollment_date", formattedDate);
+                            }}
+                            renderInput={(params) => (
+                                <TextField 
+                                    {...params}
+                                    required
+                                    fullWidth
+                                />
+                            )}
+                        />
+                    </LocalizationProvider>
                 </FormControl>
 
                 <TextField

@@ -65,6 +65,7 @@ export default function EnrollStudentEditForm({ students, courses, batches, enro
                         labelId="student-select-label"
                         value={data.student_id}
                         label="Student"
+                        disabled
                         onChange={(e) => setData("student_id", e.target.value)}
                     >
                         {students.map(student => (

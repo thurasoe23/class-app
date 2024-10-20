@@ -31,16 +31,29 @@ class EnrollStudentController extends Controller
         ]);
     }
 
+    // public function store(StoreEnrollStudentRequest $request)
+    // {
+    //     EnrollStudent::create($request->validated());
+    //     return redirect()->route('enroll-students.index')->with('success', 'Student Course Batch created successfully!');
+    // }
+
     public function store(StoreEnrollStudentRequest $request)
     {
-        EnrollStudent::create($request->validated());
-        return redirect()->route('enroll-students.index')->with('success', 'Student Course Batch created successfully!');
-    }
+        $validated = $request->validated();
 
-    // public function show(EnrollStudent $studentCourseBatch)
-    // {
-    //     return Inertia::render('EnrollStudent/Show', ['studentCourseBatch' => $studentCourseBatch]);
-    // }
+        // Bulk enroll students
+        foreach ($validated['student_ids'] as $student_id) {
+            EnrollStudent::create([
+                'student_id' => $student_id,
+                'course_id' => $validated['course_id'],
+                'batch_id' => $validated['batch_id'],
+                'enrollment_date' => $validated['enrollment_date'],
+                'status' => $validated['status'],
+            ]);
+        }
+
+        return redirect()->route('enroll-students.index')->with('success', 'Students enrolled successfully!');
+    }
 
     public function edit(EnrollStudent $enrollStudent)
     {
