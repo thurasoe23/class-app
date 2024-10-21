@@ -14,6 +14,7 @@ import {
     Checkbox,
     FormControlLabel,
 } from "@mui/material";
+import SelectDropdown from "@/Components/SelectDropdown";
 
 export default function AssignmentCreateForm() {
     const { props } = usePage();
@@ -40,6 +41,11 @@ export default function AssignmentCreateForm() {
         }
     }, [data.course_id, props.batches]);
 
+    // Effect to reset selected students when course or batch changes
+    React.useEffect(() => {
+        setData("selected_students", []); // Reset selected students when course or batch changes
+    }, [data.course_id, data.batch_id]); // Runs whenever course_id or batch_id changes
+
     const handleSubmit = (e) => {
         e.preventDefault();
         post(route("assignments.bulkAssign"));
@@ -51,15 +57,17 @@ export default function AssignmentCreateForm() {
             courseBatch.batch_id === data.batch_id
     );
 
-    console.log(filteredEnrollStudents)
+    console.log(filteredEnrollStudents);
 
     // Handle checkbox change
     const handleCheckboxChange = (studentId) => {
         setData((prevData) => {
-            const selectedStudents = prevData.selected_students.includes(studentId)
+            const selectedStudents = prevData.selected_students.includes(
+                studentId
+            )
                 ? prevData.selected_students.filter((id) => id !== studentId) // Uncheck
                 : [...prevData.selected_students, studentId]; // Check
-                console.log(selectedStudents)
+            console.log(selectedStudents);
             return { ...prevData, selected_students: selectedStudents };
         });
     };
@@ -79,47 +87,24 @@ export default function AssignmentCreateForm() {
                 component="form"
                 autoComplete="off"
             >
-                {/* Dropdown for selecting Course */}
-                <FormControl fullWidth required>
-                    <InputLabel id="course_id">Select Course</InputLabel>
-                    <Select
-                        labelId="course_id"
-                        id="course_id"
-                        value={data.course_id}
-                        label="Select Course"
-                        onChange={(e) => setData("course_id", e.target.value)}
-                    >
-                        {props.courses.map((course) => (
-                            <MenuItem key={course.id} value={course.id}>
-                                {course.name}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
+                <SelectDropdown
+                    label="Select Course"
+                    labelId="course-select-label"
+                    value={data.course_id}
+                    options={props.courses}
+                    onChange={(e) => setData("course_id", e.target.value)}
+                    disabled={false}
+                />
 
-                {/* Dropdown for selecting Batch, filtered by selected Course */}
-                <FormControl fullWidth required sx={{ marginTop: 2 }} disabled={!data.course_id}>
-                    <InputLabel id="batch_id">Select Batch</InputLabel>
-                    <Select
-                        labelId="batch_id"
-                        id="batch_id"
-                        value={data.batch_id}
-                        label="Select Batch"
-                        onChange={(e) => setData("batch_id", e.target.value)}
-                    >
-                        {filteredBatches.length > 0 ? (
-                            filteredBatches.map((batch) => (
-                                <MenuItem key={batch.id} value={batch.id}>
-                                    {batch.batch_identifier}
-                                </MenuItem>
-                            ))
-                        ) : (
-                            <MenuItem disabled>No Batches Available</MenuItem>
-                        )}
-                    </Select>
-                </FormControl>
+                <SelectDropdown
+                    label="Select Batch"
+                    labelId="batch-select-label"
+                    value={data.batch_id}
+                    options={filteredBatches}
+                    onChange={(e) => setData("batch_id", e.target.value)}
+                    disabled={!data.course_id}
+                />
 
-                {/* Show filtered student list with checkboxes */}
                 <Box mt={2}>
                     <Typography variant="body1" fontWeight="bold">
                         Select Students in the Selected Course and Batch:
@@ -130,8 +115,14 @@ export default function AssignmentCreateForm() {
                                 key={courseBatch.id}
                                 control={
                                     <Checkbox
-                                        checked={data.selected_students.includes(courseBatch.student.id)}
-                                        onChange={() => handleCheckboxChange(courseBatch.student.id)}
+                                        checked={data.selected_students.includes(
+                                            courseBatch.student.id
+                                        )}
+                                        onChange={() =>
+                                            handleCheckboxChange(
+                                                courseBatch.student.id
+                                            )
+                                        }
                                     />
                                 }
                                 label={courseBatch.student.name}
@@ -144,7 +135,6 @@ export default function AssignmentCreateForm() {
                     )}
                 </Box>
 
-                {/* Task Input */}
                 <TextField
                     required
                     label="Task"
@@ -157,7 +147,6 @@ export default function AssignmentCreateForm() {
                     sx={{ marginTop: 2 }}
                 />
 
-                {/* Status Dropdown */}
                 <FormControl fullWidth sx={{ marginTop: 2 }}>
                     <InputLabel id="status">Status</InputLabel>
                     <Select
@@ -173,7 +162,6 @@ export default function AssignmentCreateForm() {
                     </Select>
                 </FormControl>
 
-                {/* Submit Button */}
                 <div>
                     <Button
                         variant="contained"
