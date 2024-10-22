@@ -18,6 +18,7 @@ import Checkbox from "@mui/material/Checkbox";
 import Autocomplete from "@mui/material/Autocomplete";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import SelectDropdown from "@/Components/SelectDropdown";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -122,41 +123,22 @@ export default function EnrollStudentCreateForm({
                     />
                 </FormControl>
 
-                <FormControl fullWidth required>
-                    <InputLabel id="course-select-label">Course</InputLabel>
-                    <Select
-                        labelId="course-select-label"
-                        value={data.course_id}
-                        label="Course"
-                        onChange={(e) => setData("course_id", e.target.value)}
-                    >
-                        {courses.map((course) => (
-                            <MenuItem key={course.id} value={course.id}>
-                                {`${course.name} (${course.course_level})`}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
+                <SelectDropdown
+                    label="Course"
+                    labelId="course-select-label"
+                    value={data.course_id}
+                    options={courses}
+                    onChange={(e) => setData("course_id", e.target.value)}
+                />
 
-                <FormControl fullWidth required disabled={!data.course_id}>
-                    <InputLabel id="batch-select-label">Batch</InputLabel>
-                    <Select
-                        labelId="batch-select-label"
-                        value={data.batch_id}
-                        label="Batch"
-                        onChange={(e) => setData("batch_id", e.target.value)}
-                    >
-                        {filteredBatches.length > 0 ? (
-                            filteredBatches.map((batch) => (
-                                <MenuItem key={batch.id} value={batch.id}>
-                                    {batch.batch_identifier}
-                                </MenuItem>
-                            ))
-                        ) : (
-                            <MenuItem disabled>No Batches Available</MenuItem>
-                        )}
-                    </Select>
-                </FormControl>
+                <SelectDropdown
+                    label="Batch"
+                    labelId="batch-select-label"
+                    value={data.batch_id}
+                    options={filteredBatches}
+                    onChange={(e) => setData("batch_id", e.target.value)}
+                    disabled={!data.course_id}
+                />
 
                 <FormControl>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -181,6 +163,7 @@ export default function EnrollStudentCreateForm({
                 </FormControl>
 
                 <TextField
+                    fullWidth
                     label="Status"
                     variant="outlined"
                     value={data.status}

@@ -16,7 +16,7 @@ export default function CourseCreateForm() {
     const { data, setData, post, errors, processing } = useForm({
         name: "",
         course_level: "",
-        course_fee: ""
+        course_fee: "",
     });
 
     const handleSubmit = (e) => {
@@ -35,7 +35,16 @@ export default function CourseCreateForm() {
             <Head title="Add New Course" />
             <Box
                 onSubmit={handleSubmit}
-                sx={{ "& > :not(style)": { m: 1, width: "25ch" } }}
+                sx={{
+                    display: "grid",
+                    gridTemplateColumns: {
+                        xs: "1fr",
+                        sm: "1fr 1fr",
+                        md: "1fr 1fr 1fr 1fr",
+                    }, // Single column on small screens, two columns on medium+
+                    gap: 2,
+                    "& > :not(style)": { m: 1 },
+                }}
                 component="form"
                 autoComplete="off"
             >
@@ -46,17 +55,18 @@ export default function CourseCreateForm() {
                     value={data.name}
                     onChange={(e) => setData("name", e.target.value)}
                     required
+                    fullWidth
                 />
-                <FormControl>
-                    <InputLabel id="course_level">
-                        Course Level
-                    </InputLabel>
+                <FormControl fullWidth>
+                    <InputLabel id="course_level">Course Level</InputLabel>
                     <Select
                         labelId="demo-simple-select-label"
                         id="course_level"
                         value={data.course_level}
                         label="Course Level"
-                        onChange={(e) => setData("course_level", e.target.value)}
+                        onChange={(e) =>
+                            setData("course_level", e.target.value)
+                        }
                     >
                         <MenuItem value="Beginner">Beginner</MenuItem>
                         <MenuItem value="Intermidate">Intermidate</MenuItem>
@@ -70,19 +80,20 @@ export default function CourseCreateForm() {
                     value={data.course_fee}
                     onChange={(e) => setData("course_fee", e.target.value)}
                     required
+                    fullWidth
                 />
-
-                <div>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        type="submit"
-                        disabled={processing}
-                        sx={{ padding: "8px 16px" }}
-                    >
-                        {processing ? "Submitting..." : "Submit"}
-                    </Button>
-                </div>
+            </Box>
+            <Box sx={{ "& > :not(style)": { m: 1 } }}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    disabled={processing}
+                    onClick={handleSubmit}
+                    sx={{ padding: "8px 16px" }}
+                >
+                    {processing ? "Submitting..." : "Submit"}
+                </Button>
             </Box>
         </AuthenticatedLayout>
     );

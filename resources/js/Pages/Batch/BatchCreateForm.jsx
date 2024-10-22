@@ -11,10 +11,11 @@ import {
     FormControl,
     InputLabel,
 } from "@mui/material";
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import dayjs from 'dayjs';
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs from "dayjs";
+import SelectDropdown from "@/Components/SelectDropdown";
 
 export default function BatchCreateForm() {
     const { props } = usePage();
@@ -41,26 +42,26 @@ export default function BatchCreateForm() {
             <Head title="Add New Batch" />
             <Box
                 onSubmit={handleSubmit}
-                sx={{ "& > :not(style)": { m: 1, width: "25ch" } }}
+                sx={{
+                    display: "grid",
+                    gridTemplateColumns: {
+                        xs: "1fr",
+                        sm: "1fr 1fr",
+                        md: "1fr 1fr 1fr 1fr",
+                    }, // Single column on small screens, two columns on medium+
+                    gap: 2,
+                    "& > :not(style)": { m: 1 },
+                }}
                 component="form"
                 autoComplete="off"
             >
-                <FormControl fullWidth required>
-                    <InputLabel id="course_id">Select Course</InputLabel>
-                    <Select
-                        labelId="course_id"
-                        id="course_id"
-                        value={data.course_id}
-                        label="Select Course"
-                        onChange={(e) => setData("course_id", e.target.value)}
-                    >
-                        {props.courses.map((course) => (
-                            <MenuItem key={course.id} value={course.id}>
-                                {`${course.name} (${course.course_level})`}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
+                <SelectDropdown
+                    label="Select Course"
+                    labelId="course-select-label"
+                    value={data.course_id}
+                    options={props.courses}
+                    onChange={(e) => setData("course_id", e.target.value)}
+                />
 
                 <TextField
                     id="batch_identifier"
@@ -71,28 +72,15 @@ export default function BatchCreateForm() {
                         setData("batch_identifier", e.target.value)
                     }
                     required
+                    fullWidth
                 />
-                {/* <TextField
-                    id="start_date"
-                    label="Start Date"
-                    variant="outlined"
-                    type="date"
-                    value={data.start_date}
-                    onChange={(e) => setData("start_date", e.target.value)}
-                    required
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                /> */}
 
-                <FormControl>
+                <FormControl fullWidth>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
                             label="Start Date"
                             value={
-                                data.start_date
-                                    ? dayjs(data.start_date)
-                                    : null
+                                data.start_date ? dayjs(data.start_date) : null
                             }
                             onChange={(newValue) => {
                                 const formattedDate = newValue
@@ -107,15 +95,11 @@ export default function BatchCreateForm() {
                     </LocalizationProvider>
                 </FormControl>
 
-                <FormControl>
+                <FormControl fullWidth>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
                             label="End Date"
-                            value={
-                                data.end_date
-                                    ? dayjs(data.end_date)
-                                    : null
-                            }
+                            value={data.end_date ? dayjs(data.end_date) : null}
                             onChange={(newValue) => {
                                 const formattedDate = newValue
                                     ? newValue.format("YYYY-MM-DD HH:mm:ss")
@@ -128,31 +112,17 @@ export default function BatchCreateForm() {
                         />
                     </LocalizationProvider>
                 </FormControl>
-{/* 
-                <TextField
-                    id="end_date"
-                    label="End Date"
-                    variant="outlined"
-                    type="date"
-                    value={data.end_date}
-                    onChange={(e) => setData("end_date", e.target.value)}
-                    required
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                /> */}
-
-                <div>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        type="submit"
-                        disabled={processing}
-                        sx={{ padding: "8px 16px" }}
-                    >
-                        {processing ? "Submitting..." : "Submit"}
-                    </Button>
-                </div>
+            </Box>
+            <Box sx={{ "& > :not(style)": { m: 1 } }}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    disabled={processing}
+                    sx={{ padding: "8px 16px" }}
+                >
+                    {processing ? "Submitting..." : "Submit"}
+                </Button>
             </Box>
         </AuthenticatedLayout>
     );
